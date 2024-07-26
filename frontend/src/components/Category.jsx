@@ -11,7 +11,7 @@ const Category = () => {
         async function refresh() {
             if (listOfCate.length === 0) {
                 setHide(false)
-                await axios.get('http://localhost:5000/cate').then((data) => {
+                await axios.get('https://pacifico.onrender.com/cate').then((data) => {
                     setListOfCate(data.data)
                 })
                 setHide(true)
@@ -22,7 +22,7 @@ const Category = () => {
 
     const handleCateClick = async (selCate) => {
         setHide(false)
-        axios.get(`http://localhost:5000/displaycate?selCate=${selCate}`).then((data) => {
+        axios.get(`https://pacifico.onrender.com/displaycate?selCate=${selCate}`).then((data) => {
             setProducts(data.data)
 
             setHide(true)

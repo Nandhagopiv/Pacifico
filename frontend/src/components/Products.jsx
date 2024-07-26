@@ -20,7 +20,7 @@ const Products = () => {
             if (allProducts.length === 0) {
                 setHide(false)
                 setHeadSize(true)
-                await axios.get(`http://localhost:5000/refershallproducts`).then((data) => {
+                await axios.get(`https://pacifico.onrender.com/refershallproducts`).then((data) => {
                     console.log(data.data);
                     setAllProducts(data.data)
                 })
@@ -33,7 +33,7 @@ const Products = () => {
 
     const handleSearch = async () => {
         setHide(false)
-        await axios.get(`http://localhost:5000/fetch?key=${searchWord}`).then((data) => {
+        await axios.get(`https://pacifico.onrender.com/fetch?key=${searchWord}`).then((data) => {
             console.log(data.data);
             setAllProducts(data.data)
             setSearchHead(`Searched for ${searchWord}`)

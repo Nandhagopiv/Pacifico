@@ -25,7 +25,7 @@ const AddCart = () => {
         cartList.forEach((data) => {
             if (val === data.product && data.quantity < 10) {
                 setHide(false)
-                axios.get(`http://localhost:5000/addquantity?productref=${val}&email=${user.email}`).then((data) => {
+                axios.get(`https://pacifico.onrender.com/addquantity?productref=${val}&email=${user.email}`).then((data) => {
                     const userCart = data.data.cart
                     const userDet = data.data
                     const tempArr = userCart.map((data) => {
@@ -48,7 +48,7 @@ const AddCart = () => {
         cartList.forEach((data) => {
             if (val === data.product && data.quantity > 1) {
                 setHide(false)
-                axios.get(`http://localhost:5000/lessquantity?productref=${val}&email=${user.email}`).then((data) => {
+                axios.get(`https://pacifico.onrender.com/lessquantity?productref=${val}&email=${user.email}`).then((data) => {
                     const userCart = data.data.cart
                     const userDet = data.data
                     const tempArr = userCart.map((data) => {
@@ -100,7 +100,7 @@ const AddCart = () => {
         setHide(false)
         cartList.forEach((data)=>{
             if (product === data.product) {
-                axios.get(`http://localhost:5000/removecart?product=${product}&email=${user.email}`).then(async (data)=>{
+                axios.get(`https://pacifico.onrender.com/removecart?product=${product}&email=${user.email}`).then(async (data)=>{
                     addingUserDataToUpdateCart(data.data)
                     setCartList(data.data.cart)
                     localStorage.setItem('user', JSON.stringify(data.data))

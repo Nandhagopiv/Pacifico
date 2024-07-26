@@ -5,18 +5,6 @@ import { useLocation } from "react-router-dom"
 const Checkout = () => {
     const item = useLocation()
     const [count, setCount] = useState(item.state.qty)
-
-    const handleInc = () => {
-        if (count < 10) {
-            setCount(count + 1)
-        }
-    }
-
-    const handleDec = () => {
-        if (count > 1) {
-            setCount(count - 1)
-        }
-    }
     return (
         <Fragment>
             <Nav />

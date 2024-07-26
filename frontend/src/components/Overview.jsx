@@ -17,7 +17,7 @@ const Overview = () => {
 
     const handleAddCart = () => {
         setAdded(true);
-        axios.get(`http://localhost:5000/addcart?email=${user.email}&id=${item.state.id}`).then((data) => {
+        axios.get(`https://pacifico.onrender.com/addcart?email=${user.email}&id=${item.state.id}`).then((data) => {
             addingUserDataToUpdateCart(data.data)
             localStorage.setItem('user', JSON.stringify(data.data))
         }).catch(error => {

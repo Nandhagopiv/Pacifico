@@ -16,7 +16,7 @@ const AddcartContext = (props) => {
             if (user === null) {
                 setUserSts(false)
             } else {
-                axios.get(`http://localhost:5000/getuserforcart?email=${user.email}`).then((data)=>{
+                axios.get(`https://pacifico.onrender.com/getuserforcart?email=${user.email}`).then((data)=>{
                     const userCart = data.data.cart
                     const userDet = data.data
                     const tempArr = userCart.map((data)=>{

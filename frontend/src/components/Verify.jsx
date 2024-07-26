@@ -14,7 +14,7 @@ const Verify = () => {
 
     const handleClick = async (e)=>{
         e.preventDefault()
-        await axios.get(`http://localhost:5000/verify?otp=${otp}&password=${user.state.password}&email=${user.state.email}&phone=${user.state.phone}&name=${`${user.state.fname} ${user.state.lname}`}`).then((data)=>{
+        await axios.get(`https://pacifico.onrender.com/verify?otp=${otp}&password=${user.state.password}&email=${user.state.email}&phone=${user.state.phone}&name=${`${user.state.fname} ${user.state.lname}`}`).then((data)=>{
             console.log(data.data);
             if (data.data === true) {
                 alert('Verified Successfully')
