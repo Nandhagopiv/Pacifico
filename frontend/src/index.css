@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  background-color: white;
+  font-family: "Poppins", sans-serif;
+}
+
+.shadowNav{
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.shadow{
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.loadicon{
+    display: flex;
+    background-color: transparent;
+    justify-content: center;
+    align-items: center;
+    border-top: 7px solid rgb(0, 153, 214);
+    border-right: 7px solid rgb(0, 153, 214);
+    border-bottom: 7px solid rgb(0, 153, 214);
+    border-left: 7px solid transparent;
+    border-radius: 100%;
+    animation-name: Loading;
+    animation-duration: 0.8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.anime-headline{
+  animation-name: headline;
+  animation-duration: 15s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.sidenav{
+  transition-duration: 0.5s;
+}
+
+@keyframes Loading {
+    100%{
+        transform: rotateZ(360deg);
+    }    
+}
+
+@keyframes headline {
+  100%{
+    transform: translateX(-2000px)
+  }
+}
