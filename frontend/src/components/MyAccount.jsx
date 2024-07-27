@@ -2,6 +2,7 @@ import { Fragment, useContext, useEffect } from "react"
 import Nav from "./Nav"
 import { CartContext } from "../contexts/AddcartContext"
 import { useNavigate } from "react-router-dom"
+import AboutUs from "./AboutUs"
 
 const MyAccount = () => {
     const Navigate = useNavigate()
@@ -34,6 +35,7 @@ const MyAccount = () => {
                     </div>
                 </div>
             </section>
+            <AboutUs/>
         </Fragment>
     )
 }

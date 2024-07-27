@@ -28,7 +28,7 @@ const Verify = () => {
         <Fragment>
             <section className="flex h-[100%] justify-center sm:mt-[15%] mt-[50%] w-[100%]">
                 <form onSubmit={handleClick} className="sm:w-[30%] w-[75%] flex flex-col items-center gap-7">
-                    <h1 className="text-5xl font-bold">Email Verification</h1>
+                    <h1 className="md:text-5xl text-2xl font-bold">Email Verification</h1>
                     <div className="w-[50%] flex justify-center gap-2">
                         <input required value={otp} onChange={handleChange} className="bg-slate-200 p-2 rounded-lg outline-none" type="number" placeholder="Enter OTP here"></input>
                         <button type="submit" className="bg-black text-white font-bold p-2 rounded-lg">Submit</button>

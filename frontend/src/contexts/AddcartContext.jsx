@@ -8,6 +8,17 @@ const AddcartContext = (props) => {
         const storedUser = localStorage.getItem('user');
         return storedUser ? JSON.parse(storedUser) : null;
     })
+    const [cartList, setCartList] = useState(() => {
+        const storedUser = localStorage.getItem('user');
+        const parsedUser = JSON.parse(storedUser)
+        return parsedUser.cart
+    })
+
+    const [history, setHistory] = useState(() => {
+        const storedUser = localStorage.getItem('user');
+        const parsedUser = JSON.parse(storedUser)
+        return parsedUser.history
+    })
     const [userSts, setUserSts] = useState(false)
 
     useEffect(() => {
@@ -16,10 +27,10 @@ const AddcartContext = (props) => {
             if (user === null) {
                 setUserSts(false)
             } else {
-                axios.get(`https://pacifico.onrender.com/getuserforcart?email=${user.email}`).then((data)=>{
+                axios.get(`https://pacifico.onrender.com/getuserforcart?email=${user.email}`).then((data) => {
                     const userCart = data.data.cart
                     const userDet = data.data
-                    const tempArr = userCart.map((data)=>{
+                    const tempArr = userCart.map((data) => {
                         return JSON.parse(data)
                     })
                     userDet.cart = tempArr
@@ -33,13 +44,28 @@ const AddcartContext = (props) => {
     }, []);
 
     const login = (userData) => {
-        setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData))
+        const userCart = userData.cart
+        const userDet = userData
+        const tempArr = userCart.map((data) => {
+            return JSON.parse(data)
+        })
+        userDet.cart = tempArr
+        console.log(userDet);
+        localStorage.setItem('user', JSON.stringify(userDet))
+        setUser(userDet)
     }
 
-    const addingUserDataToUpdateCart = (userData)=>{
-        setUser(userData)
-        localStorage.setItem('user', JSON.stringify(userData))
+    const addingUserDataToUpdateCart = (userData) => {
+        const userCart = userData.cart
+        const userDet = userData
+        const tempArr = userCart.map((data) => {
+            return JSON.parse(data)
+        })
+        userDet.cart = tempArr
+        console.log(userDet)
+        localStorage.setItem('user', JSON.stringify(userDet))
+        setUser(userDet)
+        setCartList(userDet.cart)
     }
 
     const logout = () => {
@@ -52,7 +78,7 @@ const AddcartContext = (props) => {
     }, [user]);
 
     return (
-        <CartContext.Provider value={{logout,addingUserDataToUpdateCart, login, userSts, user, setUser, setUserSts }}>
+        <CartContext.Provider value={{ logout,history, setHistory, addingUserDataToUpdateCart, cartList, setCartList, login, userSts, user, setUser, setUserSts }}>
             {
                 props.children
             }

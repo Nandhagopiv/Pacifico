@@ -124,7 +124,7 @@ app.get('/verify', async (req, res) => {
         const data = await userCollection.find().toArray()
 
         if (data.length === 0) {
-            const result = await userCollection.insertOne({ name: name, password: password, email: email, phone: phone, cart: [] })
+            const result = await userCollection.insertOne({ name: name, password: password, email: email, phone: phone, cart: [], history:[] })
             console.log(result);
             ogOtp = null
             res.send(true)
@@ -142,7 +142,7 @@ app.get('/verify', async (req, res) => {
             })
 
             if (newUser === true) {
-                const result = await userCollection.insertOne({ name: name, password: password, email: email, phone: phone, cart: [] })
+                const result = await userCollection.insertOne({ name: name, password: password, email: email, phone: phone, cart: [], history:[] })
                 console.log(result);
                 ogOtp = null
                 res.send(true)
@@ -220,20 +220,33 @@ app.get('/getcart', async (req, res) => {
 })
 
 app.get('/fetch', async (req, res) => {
-    const { key } = req.query
+    const { key, email } = req.query
     await client.connect();
     const db = client.db('Ecommerce');
     const productCollection = db.collection('allproducts')
+    const userCollection = db.collection('users')
+
+    const result = await userCollection.updateOne({email:email},{$addToSet:{history:key}})
+    console.log(result);
 
     const data = await productCollection.find().toArray()
     const fetchList = data.filter((product) => {
-        if (product.color.toUpperCase().includes(key.toUpperCase()) || product.product.toUpperCase().includes(key.toUpperCase()) || product.category.toUpperCase().includes(key.toUpperCase()) || product.subcategory.toUpperCase().includes(key.toUpperCase())) {
+        if (product.color.toUpperCase().includes(key.toUpperCase()) || product.for.toUpperCase().includes(key.toUpperCase()) || product.product.toUpperCase().includes(key.toUpperCase()) || product.category.toUpperCase().includes(key.toUpperCase()) || product.subcategory.toUpperCase().includes(key.toUpperCase())) {
             return true
         } else {
             return false
         }
     })
     res.send(fetchList)
+})
+
+app.get('/history', async(req,res) =>{
+    const {email} = req.query
+    const db = client.db('Ecommerce')
+    const userCollection = db.collection('users')
+    const user = await userCollection.findOne({email:email})
+
+    res.send(user)
 })
 
 app.get('/newarrivals', async (req, res) => {

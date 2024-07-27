@@ -3,10 +3,11 @@ import Nav from '../components/Nav'
 import { useNavigate, useLocation } from "react-router-dom"
 import axios from "axios"
 import { CartContext } from "../contexts/AddcartContext"
+import AboutUs from "./AboutUs"
 
 const Overview = () => {
     const Navigate = useNavigate()
-    const { addingUserDataToUpdateCart, cart, user } = useContext(CartContext)
+    const { addingUserDataToUpdateCart, user } = useContext(CartContext)
     const item = useLocation()
     const [imgFile, setImgFile] = useState(item.state.img[0])
     const [added, setAdded] = useState(false)
@@ -19,9 +20,8 @@ const Overview = () => {
         setAdded(true);
         axios.get(`https://pacifico.onrender.com/addcart?email=${user.email}&id=${item.state.id}`).then((data) => {
             addingUserDataToUpdateCart(data.data)
-            localStorage.setItem('user', JSON.stringify(data.data))
         }).catch(error => {
-            console.log(error);
+            console.log(error)
         })
     }
 
@@ -79,6 +79,7 @@ const Overview = () => {
                     </div>
                 </div>
             </section>
+            <AboutUs/>
         </Fragment>
     )
 }

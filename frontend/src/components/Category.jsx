@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react"
 import Nav from "./Nav"
 import axios from "axios"
+import AboutUs from "./AboutUs"
 
 const Category = () => {
     const [listOfCate, setListOfCate] = useState([])
@@ -54,6 +55,7 @@ const Category = () => {
                     }
                 </section>
             </main>
+            <AboutUs/>
         </Fragment>
     )
 }

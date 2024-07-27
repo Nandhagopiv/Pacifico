@@ -5,21 +5,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const AddCart = () => {
-    const [cartList, setCartList] = useState([]);
     const [hide, setHide] = useState(true)
     const Navigate = useNavigate()
-    const { user, addingUserDataToUpdateCart } = useContext(CartContext);
-
-    useEffect(() => {
-        const getUserDetailsFromLocalStorage = () => {
-            const userDet = localStorage.getItem('user');
-            if (userDet) {
-                const parsedUserDet = JSON.parse(userDet);
-                setCartList(parsedUserDet.cart)
-            }
-        };
-        getUserDetailsFromLocalStorage();
-    }, [])
+    const { user, addingUserDataToUpdateCart, cartList, setCartList } = useContext(CartContext)
 
     const handleInc = (val) => {
         cartList.forEach((data) => {
@@ -88,19 +76,19 @@ const AddCart = () => {
         return accumulator + (currentItem.MRP * currentItem.quantity);
     }, 0)
 
-    const handleBuyNow = (product) =>{
-        cartList.forEach((data)=>{
+    const handleBuyNow = (product) => {
+        cartList.forEach((data) => {
             if (data.product === product) {
-                Navigate('/checkout',{state:{item:data.product,img:data.data,color:data.color,price:data.price,mrp:data.MRP,qty:data.quantity}})
+                Navigate('/checkout', { state: { item: data.product, img: data.data, color: data.color, price: data.price, mrp: data.MRP, qty: data.quantity } })
             }
         })
     }
 
-    const handleRemove = (product)=>{
+    const handleRemove = (product) => {
         setHide(false)
-        cartList.forEach((data)=>{
+        cartList.forEach((data) => {
             if (product === data.product) {
-                axios.get(`https://pacifico.onrender.com/removecart?product=${product}&email=${user.email}`).then(async (data)=>{
+                axios.get(`https://pacifico.onrender.com/removecart?product=${product}&email=${user.email}`).then(async (data) => {
                     addingUserDataToUpdateCart(data.data)
                     setCartList(data.data.cart)
                     localStorage.setItem('user', JSON.stringify(data.data))
@@ -165,10 +153,10 @@ const AddCart = () => {
                                 </div>
                             </div>
                             <div className="flex justify-around font-bold md:text-xl">
-                                <button onClick={()=>handleRemove(data.product)} className="p-3 flex-grow text-white bg-sky-500">
+                                <button onClick={() => handleRemove(data.product)} className="p-3 flex-grow text-white bg-sky-500">
                                     Remove
                                 </button>
-                                <button onClick={()=>handleBuyNow(data.product)} className="p-3 flex-grow bg-yellow-400">
+                                <button onClick={() => handleBuyNow(data.product)} className="p-3 flex-grow bg-yellow-400">
                                     Buy this now
                                 </button>
                             </div>
@@ -176,12 +164,12 @@ const AddCart = () => {
                     ))}
                 </div>
             </section>
-            <footer className="flex fixed justify-between items-center shadowNav bottom-0 px-5 md:px-14 py-3 bg-white w-[100%]"> 
-                    <div className="flex flex-col md:flex-row gap-2 md:gap-5 items-center">
-                        <h1 className="font-bold line-through md:text-xl text-gray-500">₹{mrpPrice}</h1>
-                        <h1 className="text-xl md:text-3xl font-bold">₹{totalPrice}</h1>
-                    </div>
-                    <button className="bg-orange-300 md:text-xl md:px-20 px-2 py-2 rounded-lg font-bold">Choose Payment Method</button>
+            <footer className="flex fixed justify-between items-center shadowNav bottom-0 px-5 md:px-14 py-3 bg-white w-[100%]">
+                <div className="flex flex-col md:flex-row gap-2 md:gap-5 items-center">
+                    <h1 className="font-bold line-through md:text-xl text-gray-500">₹{mrpPrice}</h1>
+                    <h1 className="text-xl md:text-3xl font-bold">₹{totalPrice}</h1>
+                </div>
+                <button className="bg-orange-300 md:text-xl md:px-20 px-2 py-2 rounded-lg font-bold">Choose Payment Method</button>
             </footer>
         </Fragment>
     );
