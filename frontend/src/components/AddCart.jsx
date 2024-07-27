@@ -55,7 +55,7 @@ const AddCart = () => {
         })
     }
 
-    if (!user || !user.cart || user.cart.length === 0) {
+    if (user === null || cartList === null || user.cart.length === 0) {
         return (
             <Fragment>
                 <Nav />
