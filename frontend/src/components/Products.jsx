@@ -19,15 +19,19 @@ const Products = () => {
 
     useEffect(() => {
         async function refresh() {
-            if (history.length > -1) {
-                setHide(false)
-                await axios.get(`https://pacifico.onrender.com/history?email=${user.email}`).then((data) => {
-                    addingUserDataToUpdateCart(data.data)
-                    setHistory(data.data.history)
-                    localStorage.setItem('user', JSON.stringify(data.data))
-                    console.log(history);
-                })
-                setHide(true)
+            if (user !== null) {
+                if (history.length > -1) {
+                    setHide(false)
+                    await axios.get(`https://pacifico.onrender.com/history?email=${user.email}`).then((data) => {
+                        addingUserDataToUpdateCart(data.data)
+                        setHistory(data.data.history)
+                        localStorage.setItem('user', JSON.stringify(data.data))
+                        console.log(history);
+                    })
+                    setHide(true)
+                }
+            } else{
+                setSearchHead('')
             }
         }
         refresh()

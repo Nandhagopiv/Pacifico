@@ -17,12 +17,16 @@ const Overview = () => {
     }
 
     const handleAddCart = () => {
-        setAdded(true);
-        axios.get(`https://pacifico.onrender.com/addcart?email=${user.email}&id=${item.state.id}`).then((data) => {
-            addingUserDataToUpdateCart(data.data)
-        }).catch(error => {
-            console.log(error)
-        })
+        if (user !== null) {
+            setAdded(true);
+            axios.get(`https://pacifico.onrender.com/addcart?email=${user.email}&id=${item.state.id}`).then((data) => {
+                addingUserDataToUpdateCart(data.data)
+            }).catch(error => {
+                console.log(error)
+            })
+        } else{
+            alert('Please Login before adding to cart')
+        }
     }
 
     const handleBuyNow = () => {
@@ -79,7 +83,7 @@ const Overview = () => {
                     </div>
                 </div>
             </section>
-            <AboutUs/>
+            <AboutUs />
         </Fragment>
     )
 }
