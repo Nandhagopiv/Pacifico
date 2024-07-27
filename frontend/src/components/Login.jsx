@@ -4,7 +4,7 @@ import axios from "axios"
 import { CartContext } from "../contexts/AddcartContext"
 
 const Login = () => {
-    const {login, setCart, setUserSts} = useContext(CartContext)
+    const {login, setUserSts} = useContext(CartContext)
     const Navigate = useNavigate()
     const [mail, setMail] = useState('')
     const [loginPass, setLoginPass] = useState('')

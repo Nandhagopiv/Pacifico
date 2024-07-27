@@ -1,11 +1,9 @@
-import { Fragment, useContext } from "react"
+import { Fragment } from "react"
 import { useNavigate } from "react-router-dom"
 import logo from '../Assets/Logo.png'
-import { CartContext } from "../contexts/AddcartContext"
 import { useState } from "react"
 
 const Nav = () => {
-    const { setCart, userCredentials } = useContext(CartContext)
     const Navigate = useNavigate()
     const [sideNav, setSideNav] = useState(false)
     const handleSearch = () => {
