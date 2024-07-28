@@ -109,7 +109,7 @@ const Checkout = () => {
                         onError={error => {
                             console.error('Payment Error:', error);
                         }}
-                        style={{ opacity: 0 }}
+                        style={{ opacity: 0, width:"200px"}}
                     />
                 </button>
             </footer>

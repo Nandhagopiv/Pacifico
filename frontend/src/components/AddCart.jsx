@@ -225,7 +225,7 @@ const AddCart = () => {
                             console.error('Payment Error:', error);
                             Navigate('/paymentfailure')
                         }}
-                        style={{opacity:0}}
+                        style={{opacity:0,width:"200px"}}
                     />
                 </button>
                 </footer>
