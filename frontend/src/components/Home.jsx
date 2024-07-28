@@ -29,7 +29,7 @@ const Home = () => {
         async function refresh() {
             if (newArrivals.length === 0) {
                 setHide(false)
-                await axios.get('http://localhost:5000/newarrivals')
+                await axios.get('https://pacifico.onrender.com/newarrivals')
                     .then((response) => {
                         console.log(response.data)
                         setNewArrivals(response.data)

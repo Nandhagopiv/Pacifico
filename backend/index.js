@@ -247,30 +247,6 @@ app.get('/fetch', async (req, res) => {
     res.send(fetchList)
 })
 
-app.get('/payment', async(req,res) =>{
-    const {email,name,amount,phone} = req.query
-    console.log(email,name,amount,phone)
-
-    let options = {
-        key:'',
-        key_secret:'',
-        amount: amount * 100,
-        currency: 'INR',
-        name: 'Pacifico Financial Services',
-        description: 'Selling Products through Website',
-        handler: (response)=>{
-            alert(response)
-        },
-        prefill:{
-            name:name,
-            email:email,
-            contact:phone
-        }
-    }
-    let pay = new window.Razorpay(options)
-    pay.open()
-})
-
 app.get('/history', async (req, res) => {
     const { email } = req.query
     const db = client.db('Ecommerce')

@@ -16,7 +16,7 @@ const Verify = () => {
         e.preventDefault();
         try {
             const response = await axios.get(
-                `http://localhost:5000/verify?otp=${otp}&password=${user.state.password}&email=${user.state.email}&phone=${user.state.phone}&name=${`${user.state.fname} ${user.state.lname}`}`
+                `https://pacifico.onrender.com/verify?otp=${otp}&password=${user.state.password}&email=${user.state.email}&phone=${user.state.phone}&name=${`${user.state.fname} ${user.state.lname}`}`
             );
             if (response.data === true) {
                 alert('Verified Successfully');

@@ -22,7 +22,7 @@ const Products = () => {
             if (user !== null) {
                 if (history.length > -1) {
                     setHide(false)
-                    await axios.get(`http://localhost:5000/history?email=${user.email}`).then((data) => {
+                    await axios.get(`https://pacifico.onrender.com/history?email=${user.email}`).then((data) => {
                         addingUserDataToUpdateCart(data.data)
                         setHistory(data.data.history)
                         localStorage.setItem('user', JSON.stringify(data.data))
@@ -39,7 +39,7 @@ const Products = () => {
     const handleSearch = async (key) => {
         if (key.length > 0) {
             setHide(false)
-            await axios.get(`http://localhost:5000/fetch?key=${key}&email=${user.email}`).then((data) => {
+            await axios.get(`https://pacifico.onrender.com/fetch?key=${key}&email=${user.email}`).then((data) => {
                 console.log(data.data)
                 setAllProducts(data.data)
                 setSearchHead(`Searched for ${searchWord}`)
