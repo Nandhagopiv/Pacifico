@@ -2,13 +2,10 @@ import { Fragment, useEffect, useState } from "react"
 import Nav from "./Nav"
 import poster from '../Assets/poster.jpg'
 import bg from '../Assets/bg.avif'
-import axios from "axios"
 import AboutUs from "./AboutUs"
 import { useNavigate } from "react-router-dom"
 
 const Home = () => {
-    const [newArrivals, setNewArrivals] = useState([])
-    const [valformoney, setValformoney] = useState([])
     const [hide, setHide] = useState(true)
     const Navigate = useNavigate()
     const Brands = [
@@ -24,21 +21,6 @@ const Home = () => {
         "Salomon",
         "Birkenstock"
     ]
-
-    useEffect(() => {
-        async function refresh() {
-            if (newArrivals.length === 0) {
-                setHide(false)
-                await axios.get('https://pacifico.onrender.com/newarrivals')
-                    .then((response) => {
-                        console.log(response.data)
-                        setNewArrivals(response.data)
-                    })
-                setHide(true)
-            }
-        }
-        refresh()
-    }, []);
 
     const handleViewProduct = (img,item,col,size,price,mrp,gender,id)=>{
         Navigate('/overview',{state:{img:img,item:item,col:col,size:size,price:price,mrp:mrp,for:gender,id:id}})
