@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { response } from 'express'
 import { MongoClient, ObjectId } from 'mongodb'
 import cors from 'cors'
 import nodemailer from 'nodemailer'
@@ -124,7 +124,7 @@ app.get('/verify', async (req, res) => {
         const data = await userCollection.find().toArray()
 
         if (data.length === 0) {
-            const result = await userCollection.insertOne({ name: name, password: password, email: email, phone: phone, cart: [], history:[] })
+            const result = await userCollection.insertOne({ name: name, password: password, email: email, phone: phone, cart: [], history: [] })
             console.log(result);
             ogOtp = null
             res.send(true)
@@ -142,7 +142,7 @@ app.get('/verify', async (req, res) => {
             })
 
             if (newUser === true) {
-                const result = await userCollection.insertOne({ name: name, password: password, email: email, phone: phone, cart: [], history:[] })
+                const result = await userCollection.insertOne({ name: name, password: password, email: email, phone: phone, cart: [], history: [] })
                 console.log(result);
                 ogOtp = null
                 res.send(true)
@@ -226,8 +226,15 @@ app.get('/fetch', async (req, res) => {
     const productCollection = db.collection('allproducts')
     const userCollection = db.collection('users')
 
-    const result = await userCollection.updateOne({email:email},{$addToSet:{history:key}})
+    const result = await userCollection.updateOne({ email: email }, { $addToSet: { history: key } })
     console.log(result);
+
+    const userHistory = await userCollection.findOne({ email: email })
+    if (userHistory.history.length > 5) {
+        userHistory.history.shift()
+    }
+    const response = await userCollection.updateOne({ email: email }, { $set: { history: userHistory.history } })
+    console.log(response);
 
     const data = await productCollection.find().toArray()
     const fetchList = data.filter((product) => {
@@ -240,11 +247,35 @@ app.get('/fetch', async (req, res) => {
     res.send(fetchList)
 })
 
-app.get('/history', async(req,res) =>{
-    const {email} = req.query
+app.get('/payment', async(req,res) =>{
+    const {email,name,amount,phone} = req.query
+    console.log(email,name,amount,phone)
+
+    let options = {
+        key:'',
+        key_secret:'',
+        amount: amount * 100,
+        currency: 'INR',
+        name: 'Pacifico Financial Services',
+        description: 'Selling Products through Website',
+        handler: (response)=>{
+            alert(response)
+        },
+        prefill:{
+            name:name,
+            email:email,
+            contact:phone
+        }
+    }
+    let pay = new window.Razorpay(options)
+    pay.open()
+})
+
+app.get('/history', async (req, res) => {
+    const { email } = req.query
     const db = client.db('Ecommerce')
     const userCollection = db.collection('users')
-    const user = await userCollection.findOne({email:email})
+    const user = await userCollection.findOne({ email: email })
 
     res.send(user)
 })
@@ -293,27 +324,27 @@ app.get('/addcart', async (req, res) => {
     res.send(fetchingToSetCart)
 })
 
-app.get('/removecart', async (req,res)=>{
-    const {product, email} = req.query
+app.get('/removecart', async (req, res) => {
+    const { product, email } = req.query
     await client.connect()
     const db = client.db('Ecommerce');
     const userCollection = db.collection('users')
 
-    const user = await userCollection.findOne({email:email})
+    const user = await userCollection.findOne({ email: email })
 
-    const tempArr = user.cart.map((data)=>{
+    const tempArr = user.cart.map((data) => {
         return JSON.parse(data)
     })
-    const updatedCart = tempArr.filter((data)=>{
+    const updatedCart = tempArr.filter((data) => {
         if (product === data.product) {
             return false
-        } else{
+        } else {
             return true
         }
     })
-    const parcedCart = updatedCart.map(data => {return JSON.stringify(data)})
-    await userCollection.findOneAndUpdate({email:email},{$set:{cart:parcedCart}})
-    const data = await userCollection.findOne({email:email})
+    const parcedCart = updatedCart.map(data => { return JSON.stringify(data) })
+    await userCollection.findOneAndUpdate({ email: email }, { $set: { cart: parcedCart } })
+    const data = await userCollection.findOne({ email: email })
     res.send(data)
 })
 
@@ -346,7 +377,7 @@ app.get('/addquantity', async (req, res) => {
         )
         console.log(result)
 
-        const data = await userCollection.findOne({email:email})
+        const data = await userCollection.findOne({ email: email })
         res.send(data)
 
     } catch (error) {
@@ -384,7 +415,7 @@ app.get('/lessquantity', async (req, res) => {
         )
         console.log(result)
 
-        const data = await userCollection.findOne({email:email})
+        const data = await userCollection.findOne({ email: email })
         res.send(data)
 
     } catch (error) {
@@ -394,12 +425,12 @@ app.get('/lessquantity', async (req, res) => {
 })
 
 app.get('/getuserforcart', async (req, res) => {
-    const {email} = req.query
+    const { email } = req.query
     await client.connect();
     const db = client.db('Ecommerce');
     const userCollection = db.collection('users')
 
-    const data = await userCollection.findOne({email:email})
+    const data = await userCollection.findOne({ email: email })
     console.log(data);
     res.send(data)
 })

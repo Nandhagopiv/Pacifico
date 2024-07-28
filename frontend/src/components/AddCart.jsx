@@ -3,6 +3,7 @@ import { CartContext } from "../contexts/AddcartContext";
 import Nav from "./Nav";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import GooglePayButton from "@google-pay/button-react";
 
 const AddCart = () => {
     const [hide, setHide] = useState(true)
@@ -13,7 +14,7 @@ const AddCart = () => {
         cartList.forEach((data) => {
             if (val === data.product && data.quantity < 10) {
                 setHide(false)
-                axios.get(`https://pacifico.onrender.com/addquantity?productref=${val}&email=${user.email}`).then((data) => {
+                axios.get(`http://localhost:5000/addquantity?productref=${val}&email=${user.email}`).then((data) => {
                     const userCart = data.data.cart
                     const userDet = data.data
                     const tempArr = userCart.map((data) => {
@@ -36,7 +37,7 @@ const AddCart = () => {
         cartList.forEach((data) => {
             if (val === data.product && data.quantity > 1) {
                 setHide(false)
-                axios.get(`https://pacifico.onrender.com/lessquantity?productref=${val}&email=${user.email}`).then((data) => {
+                axios.get(`http://localhost:5000/lessquantity?productref=${val}&email=${user.email}`).then((data) => {
                     const userCart = data.data.cart
                     const userDet = data.data
                     const tempArr = userCart.map((data) => {
@@ -55,7 +56,7 @@ const AddCart = () => {
         })
     }
 
-    if (user === null || cartList === null || user.cart.length === 0) {
+    if (user === null || user.cart === null || user.cart.length === 0) {
         return (
             <Fragment>
                 <Nav />
@@ -88,7 +89,7 @@ const AddCart = () => {
         setHide(false)
         cartList.forEach((data) => {
             if (product === data.product) {
-                axios.get(`https://pacifico.onrender.com/removecart?product=${product}&email=${user.email}`).then(async (data) => {
+                axios.get(`http://localhost:5000/removecart?product=${product}&email=${user.email}`).then(async (data) => {
                     addingUserDataToUpdateCart(data.data)
                     setCartList(data.data.cart)
                     localStorage.setItem('user', JSON.stringify(data.data))
@@ -169,8 +170,65 @@ const AddCart = () => {
                     <h1 className="font-bold line-through md:text-xl text-gray-500">₹{mrpPrice}</h1>
                     <h1 className="text-xl md:text-3xl font-bold">₹{totalPrice}</h1>
                 </div>
-                <button className="bg-orange-300 md:text-xl md:px-20 px-2 py-2 rounded-lg font-bold">Choose Payment Method</button>
-            </footer>
+
+                <button className="bg-zinc-800 flex rounded-lg justify-center items-center">
+                    <p className="absolute text-xl text-white font-bold">
+                        Proceed to Pay
+                    </p>
+                    <GooglePayButton
+                        environment="TEST"
+                        paymentRequest={{
+                            apiVersion: 2,
+                            apiVersionMinor: 0,
+                            allowedPaymentMethods: [
+                                {
+                                    type: 'CARD',
+                                    parameters: {
+                                        allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+                                        allowedCardNetworks: ['MASTERCARD', 'VISA'],
+                                    },
+                                    tokenizationSpecification: {
+                                        type: 'PAYMENT_GATEWAY',
+                                        parameters: {
+                                            gateway: 'example',
+                                            gatewayMerchantId: 'exampleGatewayMerchantId',
+                                        },
+                                    },
+                                },
+                            ],
+                            merchantInfo: {
+                                merchantId: '12345678901234567890',
+                                merchantName: 'Demo Merchant',
+                            },
+                            transactionInfo: {
+                                totalPriceStatus: 'FINAL',
+                                totalPriceLabel: 'Total',
+                                totalPrice: `${totalPrice}`,
+                                currencyCode: 'INR',
+                                countryCode: 'IN',
+                            },
+                            shippingAddressRequired: true,
+                            shippingAddressParameters: {
+                                allowedCountryCodes: ['IN'],
+                                phoneNumberRequired: true,
+                            },
+                        }}
+                        onLoadPaymentData={paymentData => {
+                            console.log('Payment Data Loaded:', paymentData);
+                            const { shippingAddress } = paymentData;
+                            if (shippingAddress) {
+                                console.log('Shipping Address:', shippingAddress);
+                            }
+                            Navigate('/paymentsuccess')
+                        }}
+                        onError={error => {
+                            console.error('Payment Error:', error);
+                            Navigate('/paymentfailure')
+                        }}
+                        style={{opacity:0}}
+                    />
+                </button>
+                </footer>
         </Fragment>
     );
 };

@@ -10,6 +10,7 @@ import MyAccount from "./components/MyAccount";
 import AddcartContext from "./contexts/AddcartContext";
 import AddCart from "./components/AddCart";
 import Checkout from "./components/Checkout";
+import SuccessPage from "./components/SuccessPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/myaccount" element={<MyAccount/>}></Route>
         <Route path="/cart" element={<AddCart/>}></Route>
         <Route path="/checkout" element={<Checkout/>}></Route>
+        <Route path="/paymentsuccess" element={<SuccessPage/>}></Route>
       </Routes>
       </BrowserRouter>
       </AddcartContext>

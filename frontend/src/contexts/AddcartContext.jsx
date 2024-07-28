@@ -44,7 +44,7 @@ const AddcartContext = (props) => {
             setUserSts(!!user);
         }
         refresh();
-    }, [user]);
+    }, []);
 
     const login = (userData) => {
         const userCart = userData.cart

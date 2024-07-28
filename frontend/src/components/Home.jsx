@@ -29,21 +29,11 @@ const Home = () => {
         async function refresh() {
             if (newArrivals.length === 0) {
                 setHide(false)
-                await axios.get('https://pacifico.onrender.com/newarrivals')
+                await axios.get('http://localhost:5000/newarrivals')
                     .then((response) => {
                         console.log(response.data)
                         setNewArrivals(response.data)
                     })
-                setHide(true)
-            }
-
-            if (valformoney.length === 0) {
-                setHide(false)
-                await axios.get('https://pacifico.onrender.com/valformoney')
-                .then((response) => {
-                    console.log(response.data)
-                    setValformoney(response.data)
-                })
                 setHide(true)
             }
         }
@@ -83,29 +73,6 @@ const Home = () => {
                             </div>
                         })
                     }
-                </div>
-            </section>
-
-            <section className="bg-white pt-5">
-                <h1 className="font-bold p-5 text-5xl">Value for Money</h1>
-                <div className="flex gap-2 overflow-x-auto p-5">
-                    {valformoney.map((data, index) => {
-                        if (index > 10) {
-                            return null
-                        } else {
-                            return (
-                                <div key={index} onClick={()=>handleViewProduct(data.data,data.product,data.color,data.size,data.price,data.MRP,data.for,data._id)} className="w-[100%] md:w-1/5 flex-shrink-0 bg-zinc-200">
-                                    <div className="h-[300px] w-[100%]">
-                                        <img className="w-[100%] h-[100%]" src={`data:image/jpeg;base64,${data.data[0]}`} alt="Product Image" />
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <h1 className="p-2 text-xl font-bold">{data.product}</h1>
-                                        <div className="p-2 font-bold flex gap-2"><p>₹{data.price}</p><p className="line-through text-gray-500">₹{data.MRP} MRP</p><p className="text-green-600">{`(${Math.floor(100 - ((data.price / data.MRP) * 100))}%)`}</p></div>
-                                    </div>
-                                </div>
-                            );
-                        }
-                    })}
                 </div>
             </section>
 

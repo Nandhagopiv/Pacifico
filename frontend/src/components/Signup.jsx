@@ -39,7 +39,7 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.get(`https://pacifico.onrender.com/signup?password=${pass}&email=${email}&crtpassword=${crtPass}&phone=${phone}`).then((data) => {
+        axios.get(`http://localhost:5000/signup?password=${pass}&email=${email}&crtpassword=${crtPass}&phone=${phone}`).then((data) => {
             if (data.data === true) {
                 Navigate('/verify',{state:{email:email,fname:fname,lname:lname,password:pass,phone:phone}})
             } else if (data.data === 'notmatching') {

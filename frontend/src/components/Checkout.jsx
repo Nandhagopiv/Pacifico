@@ -1,8 +1,10 @@
 import { Fragment, useState } from "react"
 import Nav from "./Nav"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
+import GooglePayButton from '@google-pay/button-react'
 
 const Checkout = () => {
+    const Navigate = useNavigate()
     const item = useLocation()
     const [count, setCount] = useState(item.state.qty)
     return (
@@ -10,7 +12,7 @@ const Checkout = () => {
             <Nav />
             <section>
                 <div className="flex border-b-2 pb-5 justify-between">
-                    <h1 className="md:text-5xl text-3xl px-5 md:px-10 pt-5 font-bold">Checkout</h1>
+                    <h1 className="md:text-5xl text-3xl px-5 md:px-10 pt-5 font-bold">Order Summary</h1>
                     <h1 className="text-2xl hidden md:block pt-5 md:pt-10 text-gray-600 pr-14 font-bold">Price</h1>
                 </div>
                 <div className="border-b-2 p-2">
@@ -39,7 +41,7 @@ const Checkout = () => {
                                     </p>
                                     <p className="text-center">
                                         {count}
-                                    </p>   
+                                    </p>
                                 </div>
                                 <div className="md:text-2xl text-xl font-bold">
                                     <h1>₹{count * item.state.price}</h1>
@@ -54,7 +56,62 @@ const Checkout = () => {
                     <h1 className="font-bold line-through md:text-xl text-gray-500">₹{count * item.state.mrp}</h1>
                     <h1 className="text-xl md:text-3xl font-bold">₹{count * item.state.price}</h1>
                 </div>
-                <button className="bg-orange-300 md:text-xl md:px-20 px-2 py-2 rounded-lg font-bold">Choose Payment Method</button>
+                <button className="bg-zinc-800 flex rounded-lg justify-center items-center">
+                    <p className="absolute text-xl text-white font-bold">
+                        Proceed to Pay
+                    </p>
+                    <GooglePayButton
+                        environment="TEST"
+                        paymentRequest={{
+                            apiVersion: 2,
+                            apiVersionMinor: 0,
+                            allowedPaymentMethods: [
+                                {
+                                    type: 'CARD',
+                                    parameters: {
+                                        allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+                                        allowedCardNetworks: ['MASTERCARD', 'VISA'],
+                                    },
+                                    tokenizationSpecification: {
+                                        type: 'PAYMENT_GATEWAY',
+                                        parameters: {
+                                            gateway: 'example',
+                                            gatewayMerchantId: 'exampleGatewayMerchantId',
+                                        },
+                                    },
+                                },
+                            ],
+                            merchantInfo: {
+                                merchantId: '12345678901234567890',
+                                merchantName: 'Demo Merchant',
+                            },
+                            transactionInfo: {
+                                totalPriceStatus: 'FINAL',
+                                totalPriceLabel: 'Total',
+                                totalPrice: `${count * item.state.price}`,
+                                currencyCode: 'INR',
+                                countryCode: 'IN',
+                            },
+                            shippingAddressRequired: true,
+                            shippingAddressParameters: {
+                                allowedCountryCodes: ['IN'],
+                                phoneNumberRequired: true,
+                            },
+                        }}
+                        onLoadPaymentData={paymentData => {
+                            console.log('Payment Data Loaded:', paymentData);
+                            const { shippingAddress } = paymentData;
+                            if (shippingAddress) {
+                                console.log('Shipping Address:', shippingAddress);
+                            }
+                            Navigate('/paymentsuccess')
+                        }}
+                        onError={error => {
+                            console.error('Payment Error:', error);
+                        }}
+                        style={{ opacity: 0 }}
+                    />
+                </button>
             </footer>
         </Fragment>
     )

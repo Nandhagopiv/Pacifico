@@ -19,11 +19,11 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setHide(false)
-        await axios.get(`https://pacifico.onrender.com/login?enteredmail=${mail}&enteredpass=${loginPass}`).then( async(data) => {
+        await axios.get(`http://localhost:5000/login?enteredmail=${mail}&enteredpass=${loginPass}`).then( async(data) => {
             if (data.data === false) {
                 setLoginSts(false)
             } else {
-                const response = await axios.get(`https://pacifico.onrender.com/getusercred?email=${mail}`);
+                const response = await axios.get(`http://localhost:5000/getusercred?email=${mail}`);
                 const data = response.data;
                 Navigate('/')
                 login(data)
