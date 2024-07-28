@@ -172,7 +172,7 @@ const AddCart = () => {
                 </div>
 
                 <button className="bg-zinc-800 flex rounded-lg justify-center items-center">
-                    <p className="absolute text-xl text-white font-bold">
+                    <p className="absolute md:text-xl text-white font-bold">
                         Proceed to Pay
                     </p>
                     <GooglePayButton

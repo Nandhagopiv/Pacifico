@@ -57,7 +57,7 @@ const Checkout = () => {
                     <h1 className="text-xl md:text-3xl font-bold">₹{count * item.state.price}</h1>
                 </div>
                 <button className="bg-zinc-800 flex rounded-lg justify-center items-center">
-                    <p className="absolute text-xl text-white font-bold">
+                    <p className="absolute md:text-xl text-white font-bold">
                         Proceed to Pay
                     </p>
                     <GooglePayButton
