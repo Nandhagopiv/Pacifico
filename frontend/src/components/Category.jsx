@@ -2,11 +2,13 @@ import { Fragment, useState } from "react"
 import Nav from "./Nav"
 import axios from "axios"
 import AboutUs from "./AboutUs"
+import { useNavigate } from "react-router-dom"
 
 const Category = () => {
     const [listOfCate, setListOfCate] = useState([])
     const [products, setProducts] = useState([])
     const [hide, setHide] = useState(true)
+    const Navigate = useNavigate()
 
     useState(() => {
         async function refresh() {
@@ -25,9 +27,18 @@ const Category = () => {
         setHide(false)
         axios.get(`https://pacifico.onrender.com/displaycate?selCate=${selCate}`).then((data) => {
             setProducts(data.data)
-
+            console.log(data.data);
             setHide(true)
         })
+    }
+
+    const handleSubCate = async (subcate)=>{
+        console.log(subcate);
+        setHide(false)
+        const response = await axios.get(`https://pacifico.onrender.com/getlist?key=${subcate}`)
+        console.log(response);
+        Navigate('/list', {state:{list:response.data, subCate:subcate}})
+        setHide(true)
     }
     return (
         <Fragment>
@@ -47,7 +58,7 @@ const Category = () => {
                 <section className="md:p-5 p-2 grid col-span-3 grid-cols-2 md:grid-cols-4 gap-2 min-h-[100%] bg-white">
                     {
                         products.map((data) => {
-                            return <div className="flex flex-col bg-white shadow h-fit">
+                            return <div onClick={()=>handleSubCate(data.subcategory)} className="flex flex-col bg-white shadow h-fit">
                                 <img className="w-[100%] h-[150px] md:h-[300px]" src={`data:image/jpeg;base64,${data.data[0]}`} alt="" />
                                 <p className="text-center md:text-xl p-2 md:p-7 font-bold">{data.subcategory}</p>
                             </div>

@@ -1,9 +1,14 @@
-import express, { response } from 'express'
+import express from 'express'
 import { MongoClient, ObjectId } from 'mongodb'
 import cors from 'cors'
 import nodemailer from 'nodemailer'
+import Stripe from 'stripe';
+import bodyParser from 'body-parser';
+
+const stripe = new Stripe('sk_test_51Pj12HP1mnBMkZyD4BSVBElFcc04pPlXyIKySeHQl9aIE3egQB0jqRzOPfm2DU3TPKiGhSzho8ROxQCvHFnVA1Kk00qDGUBjSX')
 
 const app = express()
+app.use(bodyParser.json())
 let ogOtp = null
 app.use(cors())
 app.use(express.json())
@@ -110,6 +115,34 @@ app.get('/signup', async (req, res) => {
     } else {
         res.send('notmatching')
     }
+})
+
+app.get('/sendemail', async (req, res) => {
+    const { email, cart } = req.query
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: "nandhagopy@gmail.com",
+            pass: "ygph wxal eita vujf",
+        },
+    });
+
+    async function main() {
+        const info = await transporter.sendMail({
+            from: '"Pacifico" <nandhagopy@gmail.com>',
+            to: `${email}`,
+            subject: "Order Successfully Placed",
+            html: `<p>Thank you for shopping with us! We’re excited to let you know that your order has been received and is currently being processed.</p>
+            <p>Thank you for choosing Pacifico. We hope you enjoy your purchase!
+
+Best regards,
+
+The Pacifico Team</p>`,
+        })
+        console.log("Message sent: %s", info.messageId)
+    }
+
+    main().catch(console.error);
 })
 
 app.get('/verify', async (req, res) => {
@@ -284,14 +317,15 @@ app.get('/refershallproducts', async (req, res) => {
 })
 
 app.get('/addcart', async (req, res) => {
-    const { id, email } = req.query
+    const { id, email, selSize } = req.query
     await client.connect();
     const db = client.db('Ecommerce');
     const productCollection = db.collection('allproducts')
     const objectId = new ObjectId(id);
     const itemData = await productCollection.findOne({ _id: objectId });
     itemData.quantity = 1
-    console.log(itemData);
+    itemData.selectedsize = selSize
+    console.log(itemData.selectedsize);
 
     const userCollection = db.collection('users')
     await userCollection.updateOne({ email: email }, { $push: { cart: JSON.stringify(itemData) } })
@@ -362,6 +396,24 @@ app.get('/addquantity', async (req, res) => {
     }
 })
 
+app.get('/getlist', async (req, res) => {
+    const { key } = req.query
+    await client.connect();
+    const db = client.db('Ecommerce');
+    const productCollection = db.collection('allproducts')
+    const data = await productCollection.find().toArray()
+
+    const subCateList = data.filter((item) => {
+        if (item.subcategory === key) {
+            return true
+        } else {
+            return false
+        }
+    })
+
+    res.send(subCateList)
+})
+
 app.get('/lessquantity', async (req, res) => {
     const { productref, email } = req.query;
     console.log(productref, email);
@@ -402,18 +454,18 @@ app.get('/lessquantity', async (req, res) => {
 
 app.get('/getuserforcart', async (req, res) => {
     const { email } = req.query
-    await client.connect();
-    const db = client.db('Ecommerce');
+    await client.connect()
+    const db = client.db('Ecommerce')
     const userCollection = db.collection('users')
 
     const data = await userCollection.findOne({ email: email })
-    console.log(data);
+    console.log(data)
     res.send(data)
 })
 
 app.get('/valformoney', async (req, res) => {
-    await client.connect();
-    const db = client.db('Ecommerce');
+    await client.connect()
+    const db = client.db('Ecommerce')
     const productCollection = db.collection('allproducts')
 
     const data = await productCollection.find().toArray()
@@ -425,7 +477,70 @@ app.get('/valformoney', async (req, res) => {
         return percentageB - percentageA
     });
 
-    res.send(valformoney);
+    res.send(valformoney)
+})
+
+app.get('/applyfilter', async (req, res) => {
+    const { forbrand, color, price, brands, subcate, forprice, forcolor } = req.query
+    const brandsArr = brands.split(',')
+    const colorArr = color.split(',')
+    const priceArr = price.split(',')
+    const brandkeys = forbrand.split(',')
+    const pricekeys = forprice.split(',')
+    const colorkeys = forcolor.split(',')
+    await client.connect()
+    const db = client.db('Ecommerce')
+    const productCollection = db.collection('allproducts')
+
+    const allproducts = await productCollection.find().toArray()
+    const subCategoryProducts = allproducts.filter((product) => {
+        if (product.subcategory === subcate) {
+            return true
+        } else {
+            return false
+        }
+    })
+    let brandsSet = new Set(brandkeys)
+    let priceSet = new Set(pricekeys)
+    let colorSet = new Set(colorkeys)
+
+    if (priceSet.has('')) {
+        priceSet = new Set(priceArr)
+    }
+
+    if (brandsSet.has('')) {
+        brandsSet = new Set(brandsArr)
+    }
+
+    if (colorSet.has('')) {
+        colorSet = new Set(colorArr)
+    }
+
+    const filteredProducts = subCategoryProducts.filter((product) => {
+        if (priceSet.has('below 500') && product.price < 500 && brandsSet.has(product.brand) && colorSet.has(product.color)) {
+            return product
+        }
+        if (priceSet.has('500 to 1000') && product.price > 500 && product.price < 1000 && brandsSet.has(product.brand) && colorSet.has(product.color)) {
+            return product
+        }
+        if (priceSet.has('1000 to 5000') && product.price > 1000 && product.price < 5000 && brandsSet.has(product.brand) && colorSet.has(product.color)) {
+            return product
+        }
+        if (priceSet.has('5000 to 10000') && product.price > 5000 && product.price < 10000 && brandsSet.has(product.brand) && colorSet.has(product.color)) {
+            return product
+        }
+        if (priceSet.has('10000 to 25000') && product.price > 10000 && product.price < 25000 && brandsSet.has(product.brand) && colorSet.has(product.color)) {
+            return product
+        }
+        if (priceSet.has('25000 to 50000') && product.price > 25000 && product.price < 50000 && brandsSet.has(product.brand) && colorSet.has(product.color)) {
+            return product
+        }
+        if (priceSet.has('50000 to 100000') && product.price > 50000 && product.price < 100000 && brandsSet.has(product.brand) && colorSet.has(product.color)) {
+            return product
+        }
+    })
+
+    res.send(filteredProducts)
 })
 
 app.get('/cate', async (req, res) => {
@@ -466,6 +581,36 @@ app.get('/displaycate', async (req, res) => {
     });
     res.send(uniqueData)
 })
+
+app.get('/fetchnewlyadded', async (req, res) => {
+    await client.connect()
+    const db = client.db('Ecommerce')
+    const productCollection = db.collection('allproducts')
+    const latestProducts = await productCollection
+        .find()
+        .sort({ _id: -1 })
+        .limit(7)
+        .toArray()
+    res.send(latestProducts)
+})
+
+app.post('/create-payment-intent', async (req, res) => {
+    try {
+        const { amount } = req.body
+        if (amount < 1000) {
+            throw new Error('Amount must be at least ₹10.00.');
+        }
+
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount,
+            currency: 'inr',
+            automatic_payment_methods: { enabled: true },
+        })
+        res.json({ clientSecret: paymentIntent.client_secret });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 app.listen(5000, async () => {
     console.log('Server Started');

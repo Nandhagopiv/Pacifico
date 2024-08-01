@@ -4,9 +4,11 @@ import poster from '../Assets/poster.jpg'
 import bg from '../Assets/bg.avif'
 import AboutUs from "./AboutUs"
 import { useNavigate } from "react-router-dom"
+import axios from "axios"
 
 const Home = () => {
     const [hide, setHide] = useState(true)
+    const [newlyAdded, setNewlyAdded] = useState([])
     const Navigate = useNavigate()
     const Brands = [
         "Nike",
@@ -22,14 +24,27 @@ const Home = () => {
         "Birkenstock"
     ]
 
-    const handleViewProduct = (img,item,col,size,price,mrp,gender,id)=>{
-        Navigate('/overview',{state:{img:img,item:item,col:col,size:size,price:price,mrp:mrp,for:gender,id:id}})
+    useEffect(() => {
+        async function refresh() {
+            if (newlyAdded.length === 0) {
+                setHide(false)
+                const response = await axios.get(`https://pacifico.onrender.com/fetchnewlyadded`)
+                console.log(response.data);
+                setNewlyAdded(response.data)
+                setHide(true)
+            }
+        }
+        refresh()
+    })
+
+    const handleViewProduct = (img, item, col, size, price, mrp, gender, id, about) => {
+        Navigate('/overview', { state: { img: img, item: item, col: col, size: size, price: price, mrp: mrp, for: gender, id: id, about:about } })
     }
 
     return (
         <Fragment>
             <section style={{ display: hide ? 'none' : 'flex' }} className="fixed bg-zinc-200 justify-center items-center z-40 w-[100%] h-[100%] font-bold"><div className="loadicon md:h-[50px] md:w-[50px] h-[50px] w-[50px]"></div></section>
-            <Nav/>
+            <Nav />
             <section className="bg-white h-12 lg:block hidden text-[#FF204E] p-3">
                 <h1 className="anime-headline -right-[40%] text-xl absolute font-bold">Original Branded Shoes at Surplus Factory Prices (upto 90% Offer)</h1>
             </section>
@@ -45,19 +60,31 @@ const Home = () => {
                     <p className="absolute top-0 text-center text-4xl lg:text-6xl my-20 text-[#FF008E] p-10 font-bold">Flash Sale Alert: Grab Your Favorite Brands at Surplus Prices!</p>
                 </div>
             </section>
-            <section className="bg-white pt-5">
-                <h1 className="font-bold p-5 text-5xl">Brands</h1>
-                <div className=" flex p-5 gap-5 justify-between flex-wrap">
-                    {
-                        Brands.map((brand) => {
-                            return <div className="md:p-7 p-5 px-5 md:px-10 border-2 border-zinc-300 rounded-lg bg-white text-center flex-grow">
-                                <h1 className="text-2xl md:text-3xl font-extrabold">{brand}</h1>
-                            </div>
-                        })
-                    }
+
+            <section className="bg-white flex p-2 justify-center py-10">
+                <div className="md:w-[75%] w-[100%]">
+                    <h1 className="font-bold p-5 text-center text-2xl md:text-5xl">Newly Added</h1>
+                    <div className="grid grid-cols-2 gap-2 mt-10 md:grid-cols-4">
+                        {
+                            newlyAdded.map((product) => {
+                                return <div onClick={() => handleViewProduct(product.data, product.product, product.color, product.size, product.price, product.MRP, product.for, product._id, product.description)} className="bg-white flex-grow shadow">
+                                        <img className="md:h-80 h-40 w-[100%]" src={`data:image/jpeg;base64,${product.data[0]}`} alt="Product Image" />
+                                        <div className="p-2">
+                                            <h1 className="text-sm md:text-xl md:font-bold">{product.product}</h1>
+                                            <p className="text-sm md:text-xl font-bold">{product.color}</p>
+                                            <div className="text-sm md:text-xl flex gap-2 font-bold">
+                                                <p className="line-through text-gray-400">{product.MRP}</p>
+                                                <p>₹{product.price}</p>
+                                                <p className="font-bold text-green-600">{`(${Math.floor(100 - ((product.price / product.MRP) * 100))}%)`}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                            })
+                        }
+                    </div>
                 </div>
             </section>
-            <AboutUs/>
+            <AboutUs />
         </Fragment>
     )
 }

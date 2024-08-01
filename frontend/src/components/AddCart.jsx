@@ -1,9 +1,8 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext,  useState } from "react";
 import { CartContext } from "../contexts/AddcartContext";
 import Nav from "./Nav";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import GooglePayButton from "@google-pay/button-react";
 
 const AddCart = () => {
     const [hide, setHide] = useState(true)
@@ -77,10 +76,10 @@ const AddCart = () => {
         return accumulator + (currentItem.MRP * currentItem.quantity);
     }, 0)
 
-    const handleBuyNow = (product) => {
+    const handleBuyNow = (product, size) => {
         cartList.forEach((data) => {
             if (data.product === product) {
-                Navigate('/checkout', { state: { item: data.product, img: data.data, color: data.color, price: data.price, mrp: data.MRP, qty: data.quantity } })
+                Navigate('/checkout', { state: { item: data.product, img: data.data, color: data.color, price: data.price, mrp: data.MRP, qty: data.quantity, selSize: size } })
             }
         })
     }
@@ -97,6 +96,10 @@ const AddCart = () => {
                 })
             }
         })
+    }
+
+    const handlePay = ()=>{
+        Navigate('/processpayment', {state:{amount:totalPrice}})
     }
 
     return (
@@ -129,6 +132,9 @@ const AddCart = () => {
                                             ({Math.floor(100 - (data.price / data.MRP) * 100)}%)
                                         </p>
                                     </div>
+                                    <div className="font-bold md:text-2xl">
+                                        <h1>{data.selectedsize}</h1>
+                                    </div>
                                     <div className="flex flex-col gap-5 md:flex-row justify-between">
                                         <div className="flex gap-2 font-bold md:text-xl">
                                             <button
@@ -157,7 +163,7 @@ const AddCart = () => {
                                 <button onClick={() => handleRemove(data.product)} className="p-3 flex-grow text-white bg-sky-500">
                                     Remove
                                 </button>
-                                <button onClick={() => handleBuyNow(data.product)} className="p-3 flex-grow bg-yellow-400">
+                                <button onClick={() => handleBuyNow(data.product, data.selectedsize)} className="p-3 flex-grow bg-yellow-400">
                                     Buy this now
                                 </button>
                             </div>
@@ -171,63 +177,7 @@ const AddCart = () => {
                     <h1 className="text-xl md:text-3xl font-bold">₹{totalPrice}</h1>
                 </div>
 
-                <button className="bg-zinc-800 flex rounded-lg justify-center items-center">
-                    <p className="absolute md:text-xl text-white font-bold">
-                        Proceed to Pay
-                    </p>
-                    <GooglePayButton
-                        environment="TEST"
-                        paymentRequest={{
-                            apiVersion: 2,
-                            apiVersionMinor: 0,
-                            allowedPaymentMethods: [
-                                {
-                                    type: 'CARD',
-                                    parameters: {
-                                        allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-                                        allowedCardNetworks: ['MASTERCARD', 'VISA'],
-                                    },
-                                    tokenizationSpecification: {
-                                        type: 'PAYMENT_GATEWAY',
-                                        parameters: {
-                                            gateway: 'example',
-                                            gatewayMerchantId: 'exampleGatewayMerchantId',
-                                        },
-                                    },
-                                },
-                            ],
-                            merchantInfo: {
-                                merchantId: '12345678901234567890',
-                                merchantName: 'Demo Merchant',
-                            },
-                            transactionInfo: {
-                                totalPriceStatus: 'FINAL',
-                                totalPriceLabel: 'Total',
-                                totalPrice: `${totalPrice}`,
-                                currencyCode: 'INR',
-                                countryCode: 'IN',
-                            },
-                            shippingAddressRequired: true,
-                            shippingAddressParameters: {
-                                allowedCountryCodes: ['IN'],
-                                phoneNumberRequired: true,
-                            },
-                        }}
-                        onLoadPaymentData={paymentData => {
-                            console.log('Payment Data Loaded:', paymentData);
-                            const { shippingAddress } = paymentData;
-                            if (shippingAddress) {
-                                console.log('Shipping Address:', shippingAddress);
-                            }
-                            Navigate('/paymentsuccess')
-                        }}
-                        onError={error => {
-                            console.error('Payment Error:', error);
-                            Navigate('/paymentfailure')
-                        }}
-                        style={{opacity:0,width:"200px"}}
-                    />
-                </button>
+                <button onClick={handlePay} className="bg-green-600 font-bold text-white rounded-lg md:px-20 px-5 py-3">Place Order</button>
                 </footer>
         </Fragment>
     );

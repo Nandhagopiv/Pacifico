@@ -11,32 +11,52 @@ const Overview = () => {
     const item = useLocation()
     const [imgFile, setImgFile] = useState(item.state.img[0])
     const [added, setAdded] = useState(false)
+    const [selectedSize, setSelectedSize] = useState(null)
+    const [msg, setMsg] = useState(false)
+    const [size, setSize] = useState(()=>{
+        const tempArr = item.state.size.map((data)=>{
+            return data
+        })
+        return tempArr
+    })
 
     const handleViewImg = (pic) => {
         setImgFile(pic)
     }
 
     const handleAddCart = () => {
-        if (user !== null) {
-            setAdded(true);
-            axios.get(`https://pacifico.onrender.com/addcart?email=${user.email}&id=${item.state.id}`).then((data) => {
-                addingUserDataToUpdateCart(data.data)
-            }).catch(error => {
-                console.log(error)
-            })
+        if (selectedSize === null) {
+            setMsg(true)
         } else{
-            alert('Please Login before adding to cart')
+            if (user !== null) {
+                setAdded(true);
+                axios.get(`https://pacifico.onrender.com/addcart?email=${user.email}&id=${item.state.id}&selSize=${selectedSize}`).then((data) => {
+                    addingUserDataToUpdateCart(data.data)
+                }).catch(error => {
+                    console.log(error)
+                })
+            } else{
+                alert('Please Login before adding to cart')
+            }
         }
     }
 
     const handleBuyNow = () => {
-        Navigate('/checkout', { state: { item: item.state.item, img: item.state.img, color: item.state.col, price: item.state.price, mrp: item.state.mrp, qty: 1 } })
+        if (selectedSize === null) {
+            setMsg(true)
+        } else{
+            if (user !== null){
+                Navigate('/checkout', { state: { item: item.state.item, img: item.state.img, color: item.state.col, price: item.state.price, mrp: item.state.mrp, qty: 1 } })
+            }else{
+                alert('Please Login before Buying')
+            }
+        }
     }
 
     return (
         <Fragment>
             <Nav />
-            <section className="bg-zinc-200 md:p-10 p-2 grid md:gap-0 gap-10 grid-rows-2 md:grid-cols-2">
+            <section className="bg-zinc-200 md:p-10 p-4 grid md:gap-0 gap-10 md:grid-cols-2">
                 <div className="flex flex-col-reverse md:grid md:grid-cols-5 gap-2">
                     <div className="flex md:col-span-1 md:order-1 gap-1 overflow-x-auto md:flex-col md:gap-2">
                         {
@@ -66,9 +86,10 @@ const Overview = () => {
                         <p className="md:text-2xl font-bold">{item.state.for.charAt(0).toUpperCase() + item.state.for.slice(1)}</p>
                     </div>
                     <p className="md:text-2xl text-gray-600 font-semibold">{item.state.col}</p>
-                    <p className="tmd:text-2xl flex gap-2 font-bold">{item.state.size.map((data) => {
-                        return <p className="p-2 border flex items-center justify-center rounded-full border-gray-500 h-[50px] min-w-12">{data}</p>
+                    <p className="md:text-2xl flex flex-wrap gap-2 font-bold">{size.map((data) => {
+                        return <p onClick={() => setSelectedSize(data)}  className={`p-2 border ${selectedSize === data ? 'bg-black text-white' : 'bg-gray-200 text-gray-700'} flex cursor-pointer items-center justify-center rounded-full border-gray-500 h-[50px] min-w-[50px]`}>{data}</p>
                     })}</p>
+                    <p style={{display:msg?'block':'none'}} className="md:text-xl font-semibold">Select one Size or Variant</p>
                     <hr className="border border-gray-400"></hr>
                     <div className="flex gap-2">
                         <p className="md:text-2xl font-bold">₹{item.state.price}</p>
@@ -82,6 +103,10 @@ const Overview = () => {
                         <button onClick={handleAddCart} disabled={added} className="flex items-center md:gap-5 gap-2 rounded-lg p-3 md:p-5 border-2 justify-center border-gray-400 flex-grow hover:border-black"><i className="fa-solid fa-cart-shopping fa-sm md:fa-2xl"></i> <p className="md:text-xl text-sm font-bold">{added ? 'ADDED TO CART' : 'ADD TO CART'}</p></button>
                     </div>
                 </div>
+            </section>
+            <section className="bg-zinc-200 p-5 md:p-10 md:text-2xl">
+                <h1 className="font-bold text-4xl mb-10">About this Product</h1>
+                <p>{item.state.about}</p>
             </section>
             <AboutUs />
         </Fragment>

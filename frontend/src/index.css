@@ -15,6 +15,10 @@ body{
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
+.shadowFilter{
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -34,6 +38,14 @@ body{
     animation-duration: 0.8s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+}
+
+.filterButton{
+  transition-duration: 0.5s;
+}
+
+.filter{
+  transition-duration: 0.5s;
 }
 
 .anime-headline{

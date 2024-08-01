@@ -49,8 +49,8 @@ const Products = () => {
         }
     }
 
-    const handleViewProduct = (img, item, col, size, price, mrp, gender, id) => {
-        Navigate('/overview', { state: { img: img, item: item, col: col, size: size, price: price, mrp: mrp, for: gender, id: id } })
+    const handleViewProduct = (img, item, col, size, price, mrp, gender, id, about) => {
+        Navigate('/overview', { state: { img: img, item: item, col: col, size: size, price: price, mrp: mrp, for: gender, id: id, about: about} })
     }
 
     const handleSearchWords = (word) => {
@@ -86,7 +86,7 @@ const Products = () => {
                         <div className="grid gap-2 grid-cols-2 md:grid-cols-6">
                             {
                                 allProducts.map((product) => {
-                                    return <div onClick={() => handleViewProduct(product.data, product.product, product.color, product.size, product.price, product.MRP, product.for, product._id)} className="bg-white flex-grow shadow">
+                                    return <div onClick={() => handleViewProduct(product.data, product.product, product.color, product.size, product.price, product.MRP, product.for, product._id, product.description)} className="bg-white flex-grow shadow">
                                         <img className="md:h-60 h-40 w-[100%]" src={`data:image/jpeg;base64,${product.data[0]}`} alt="Product Image" />
                                         <div className="p-2">
                                             <h1 className="text-sm md:text-xl md:font-bold">{product.product}</h1>
