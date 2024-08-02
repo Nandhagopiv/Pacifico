@@ -53,19 +53,74 @@ const Signup = () => {
     }
     return (
         <Fragment>
-            <section className="flex justify-center mt-[35%] sm:mt-[5%]">
-                <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-[70%] sm:w-[25%]">
-                    <h1 className="text-5xl my-2 font-bold">Signup</h1>
-                    <p style={{color:stscolor?'skyblue':'red'}} className="pb-2">{signupSts}</p>
-                    <input required value={fname} onChange={handleFName} className="bg-slate-200 p-2 rounded-lg w-[100%] outline-none" type="text" placeholder="Enter First Name"></input>
-                    <input value={lname} onChange={handleLName} className="bg-slate-200 p-2 rounded-lg w-[100%] outline-none" type="text" placeholder="Enter Last Name"></input>
-                    <input required value={pass} onChange={handlePass} className="bg-slate-200 p-2 w-[100%] rounded-lg outline-none" type="password" placeholder="Enter your Password"></input>
-                    <input required value={crtPass} onChange={handleCrtPass} className="bg-slate-200 p-2 w-[100%] rounded-lg outline-none" type="password" placeholder="Confirm Password"></input>
-                    <input required value={email} onChange={handleEmail} className="bg-slate-200 p-2 w-[100%] rounded-lg outline-none" type="email" placeholder="Enter your Email"></input>
-                    <input required value={phone} onChange={handlePhone} className="bg-slate-200 p-2 w-[100%] rounded-lg outline-none" type="number" placeholder="Enter your Mobile"></input>
-                    <button className="font-bold p-2 bg-black text-white rounded-lg" type="submit">Sign up</button>
-                    <p className="pt-2">Already have an account? <Link to={'/login'} className="underline text-black font-semibold">Login</Link></p>
-                </form>
+            <section className="flex items-center justify-center min-h-screen bg-gray-100">
+                <div className="flex flex-col gap-6 m-6 p-8 bg-white rounded-lg shadow-lg w-full max-w-md sm:w-3/4 md:w-1/2 lg:w-1/3">
+                    <h1 className="text-3xl sm:text-4xl font-semibold mb-4 text-gray-900 text-center">Signup</h1>
+                    <p className={`text-center mb-4 ${stscolor ? 'text-blue-500' : 'text-red-500'}`}>
+                        {signupSts}
+                    </p>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                        <input
+                            required
+                            value={fname}
+                            onChange={handleFName}
+                            className="bg-gray-200 p-3 rounded-lg outline-none border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                            type="text"
+                            placeholder="Enter First Name"
+                        />
+                        <input
+                            value={lname}
+                            onChange={handleLName}
+                            className="bg-gray-200 p-3 rounded-lg outline-none border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                            type="text"
+                            placeholder="Enter Last Name (Optional)"
+                        />
+                        <input
+                            required
+                            value={pass}
+                            onChange={handlePass}
+                            className="bg-gray-200 p-3 rounded-lg outline-none border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                            type="password"
+                            placeholder="Enter your Password"
+                        />
+                        <input
+                            required
+                            value={crtPass}
+                            onChange={handleCrtPass}
+                            className="bg-gray-200 p-3 rounded-lg outline-none border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                            type="password"
+                            placeholder="Confirm Password"
+                        />
+                        <input
+                            required
+                            value={email}
+                            onChange={handleEmail}
+                            className="bg-gray-200 p-3 rounded-lg outline-none border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                            type="email"
+                            placeholder="Enter your Email"
+                        />
+                        <input
+                            required
+                            value={phone}
+                            onChange={handlePhone}
+                            className="bg-gray-200 p-3 rounded-lg outline-none border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                            type="tel"
+                            placeholder="Enter your Phone"
+                        />
+                        <button
+                            className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition"
+                            type="submit"
+                        >
+                            Sign Up
+                        </button>
+                    </form>
+                    <p className="text-center mt-4 text-gray-600">
+                        Already have an account?{' '}
+                        <Link to="/login" className="text-blue-600 hover:underline font-semibold">
+                            Login
+                        </Link>
+                    </p>
+                </div>
             </section>
         </Fragment>
     )

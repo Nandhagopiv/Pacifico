@@ -14,6 +14,20 @@ const PaymentForm = () => {
     const [error, setError] = useState(null);
     const [processing, setProcessing] = useState(false);
 
+    const [orderItems, setOrderItems] = useState(()=>{
+        const tempArr = amount.state.cart.map((data)=>{
+            const obj = {
+                product: data.product,
+                color: data.color,
+                qty: data.quantity,
+                price: data.price,
+                size: data.selectedsize
+            }
+            return JSON.stringify(obj)
+        })
+        return tempArr
+    })
+
     useEffect(() => {
         const createPaymentIntent = async () => {
             console.log(amount.state.cart);
@@ -55,7 +69,7 @@ const PaymentForm = () => {
             setError(confirmError.message);
             Navigate('/failed')
         } else if (paymentIntent.status === 'succeeded') {
-            axios.get(`https://pacifico.onrender.com/sendemail?email=${user.email}&qty=${amount.state.qty}&price=${amount.state.price}&product=${amount.state.product}&color=${amount.state.color}&size=${amount.state.size}&cart=${amount.state.cart}&ttlprice=${amount.state.ttlprice}`)
+            axios.get(`https://pacifico.onrender.com/sendemail?email=${user.email}&qty=${amount.state.qty}&price=${amount.state.price}&product=${amount.state.product}&color=${amount.state.color}&size=${amount.state.size}&cart=${orderItems}&ttlprice=${amount.state.ttlprice}`)
             Navigate('/paymentsuccess', { state: { amount: amount.state.amount } })
         }
 

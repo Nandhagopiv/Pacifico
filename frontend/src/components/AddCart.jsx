@@ -1,4 +1,4 @@
-import { Fragment, useContext,  useState } from "react";
+import { Fragment, useContext,  useEffect,  useState } from "react";
 import { CartContext } from "../contexts/AddcartContext";
 import Nav from "./Nav";
 import axios from "axios";
@@ -8,19 +8,6 @@ const AddCart = () => {
     const [hide, setHide] = useState(true)
     const Navigate = useNavigate()
     const { user, addingUserDataToUpdateCart, cartList, setCartList } = useContext(CartContext)
-    const [orderItems, setOrderItems] = useState(()=>{
-        const tempArr = cartList.map((data)=>{
-            const obj = {
-                product: data.product,
-                color: data.color,
-                qty: data.quantity,
-                price: data.price,
-                size: data.selectedsize
-            }
-            return JSON.stringify(obj)
-        })
-        return tempArr
-    })
 
     const handleInc = (val) => {
         cartList.forEach((data) => {
@@ -112,7 +99,7 @@ const AddCart = () => {
     }
 
     const handlePay = ()=>{
-        Navigate('/processpayment', {state:{amount:totalPrice*100, cart: orderItems, ttlprice: totalPrice}})
+        Navigate('/processpayment', {state:{amount:totalPrice*100, cart: cartList, ttlprice: totalPrice}})
     }
 
     return (

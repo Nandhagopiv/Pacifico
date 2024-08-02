@@ -38,18 +38,53 @@ const Login = () => {
     }
     return (
         <Fragment>
-            <section style={{ display: hide ? 'none' : 'flex', backgroundColor: 'rgba(228,228,231,0.50)' }} className="fixed bg-zinc-200 justify-center items-center z-40 w-[100%] h-[100%] font-bold"><div className="loadicon md:h-[50px] md:w-[50px] h-[50px] w-[50px]"></div></section>
-            <section className="flex justify-center mt-[50%] sm:mt-[10%]">
-                <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-[70%] sm:w-[25%]">
-                    <h1 className="text-5xl my-2 font-bold">Login</h1>
-                    <p style={{ color: loginSts ? 'skyblue' : 'red' }} className="pb-2">{
-                        loginSts ? 'You can Login here:)' : 'Incorrect Email or Password'
-                    }</p>
-                    <input required value={mail} onChange={handleMail} className="bg-slate-200 p-2 rounded-lg w-[100%] outline-none" type="email" placeholder="Enter your Mobile or Email"></input>
-                    <input required value={loginPass} onChange={handleLoginPass} className="bg-slate-200 p-2 w-[100%] rounded-lg outline-none" type="password" placeholder="Enter your Password"></input>
-                    <button className="font-bold p-2 bg-black text-white rounded-lg" type="submit">Login</button>
-                    <p className="pt-2">Don't have an account? <Link to={'/signup'} className="underline font-semibold text-black">Signup</Link></p>
-                </form>
+            <section
+                style={{
+                    display: hide ? 'none' : 'flex',
+                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                }}
+                className="fixed inset-0 flex items-center justify-center z-40"
+            >
+                <div className="loadicon md:h-16 md:w-16 h-12 w-12 border-t-4 border-white border-solid rounded-full animate-spin"></div>
+            </section>
+
+            <section className="flex items-center justify-center min-h-screen bg-gray-100">
+                <div className="flex flex-col gap-6 m-6 p-6 bg-white rounded-lg shadow-lg w-full max-w-md sm:w-3/4 md:w-1/2 lg:w-1/3">
+                    <h1 className="text-3xl sm:text-4xl font-semibold mb-4 text-gray-900 text-center">Login</h1>
+                    <p className={`text-center mb-4 ${loginSts ? 'text-blue-500' : 'text-red-500'}`}>
+                        {loginSts ? 'You can Login here :)' : 'Incorrect Email or Password'}
+                    </p>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                        <input
+                            required
+                            value={mail}
+                            onChange={handleMail}
+                            className="bg-gray-200 p-3 rounded-lg outline-none border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                            type="email"
+                            placeholder="Enter your Mobile or Email"
+                        />
+                        <input
+                            required
+                            value={loginPass}
+                            onChange={handleLoginPass}
+                            className="bg-gray-200 p-3 rounded-lg outline-none border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                            type="password"
+                            placeholder="Enter your Password"
+                        />
+                        <button
+                            className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition"
+                            type="submit"
+                        >
+                            Login
+                        </button>
+                    </form>
+                    <p className="text-center mt-4 text-gray-600">
+                        Don't have an account?{' '}
+                        <Link to="/signup" className="text-blue-600 hover:underline font-semibold">
+                            Signup
+                        </Link>
+                    </p>
+                </div>
             </section>
         </Fragment>
     )

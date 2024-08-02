@@ -121,7 +121,7 @@ const ListOfProducts = () => {
                         </div>
                     }
                 </div>
-                <div style={{ bottom: filterBox ? '0' : '-75%' }} className="fixed shadowFilter overflow-auto px-5 py-7 flex flex-col md:flex-row md:justify-center gap-5 md:gap-24 filter w-[100%] bg-white h-[75%]">
+                <div style={{ bottom: filterBox ? '0' : '-75%' }} className="fixed shadow-xl overflow-auto px-5 py-7 flex flex-col md:flex-row md:justify-center gap-5 md:gap-24 filter w-[100%] bg-white h-[75%]">
                     <div className="flex flex-col gap-2">
                         <h1 className="text-2xl font-bold">SELECT PRICE</h1>
                         {price.length > 0 ? (

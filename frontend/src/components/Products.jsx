@@ -29,7 +29,7 @@ const Products = () => {
                     })
                     setHide(true)
                 }
-            } else{
+            } else {
                 setSearchHead('')
             }
         }
@@ -38,19 +38,30 @@ const Products = () => {
 
     const handleSearch = async (key) => {
         if (key.length > 0) {
-            setHide(false)
-            await axios.get(`https://pacifico.onrender.com/fetch?key=${key}&email=${user.email}`).then((data) => {
-                console.log(data.data)
-                setAllProducts(data.data)
-                setSearchHead(`Searched for ${searchWord}`)
-            })
-            setHistoryHide(true)
-            setHide(true)
+            if (user !== null) {
+                setHide(false)
+                await axios.get(`https://pacifico.onrender.com/fetch?key=${key}&email=${user.email}`).then((data) => {
+                    console.log(data.data)
+                    setAllProducts(data.data)
+                    setSearchHead(`Searched for ${searchWord}`)
+                })
+                setHistoryHide(true)
+                setHide(true)
+            } else{
+                setHide(false)
+                await axios.get(`https://pacifico.onrender.com/fetch?key=${key}&email=${null}`).then((data) => {
+                    console.log(data.data)
+                    setAllProducts(data.data)
+                    setSearchHead(`Searched for ${searchWord}`)
+                })
+                setHistoryHide(true)
+                setHide(true)
+            }
         }
     }
 
     const handleViewProduct = (img, item, col, size, price, mrp, gender, id, about) => {
-        Navigate('/overview', { state: { img: img, item: item, col: col, size: size, price: price, mrp: mrp, for: gender, id: id, about: about} })
+        Navigate('/overview', { state: { img: img, item: item, col: col, size: size, price: price, mrp: mrp, for: gender, id: id, about: about } })
     }
 
     const handleSearchWords = (word) => {

@@ -32,12 +32,12 @@ const Category = () => {
         })
     }
 
-    const handleSubCate = async (subcate)=>{
+    const handleSubCate = async (subcate) => {
         console.log(subcate);
         setHide(false)
         const response = await axios.get(`https://pacifico.onrender.com/getlist?key=${subcate}`)
         console.log(response);
-        Navigate('/list', {state:{list:response.data, subCate:subcate}})
+        Navigate('/list', { state: { list: response.data, subCate: subcate } })
         setHide(true)
     }
     return (
@@ -45,12 +45,12 @@ const Category = () => {
             <section style={{ display: hide ? 'none' : 'flex' }} className="fixed bg-zinc-200 justify-center items-center z-40 w-[100%] h-[100%] font-bold"><div className="loadicon md:h-[50px] md:w-[50px] h-[50px] w-[50px]"></div></section>
             <Nav />
             <main className="md:grid md:grid-cols-4 flex flex-col min-h-screen">
-                <section className="min-h-[100%] col-span-1 relative md:py-5  overflow-x-auto flex md:flex-col shadow z-20 bg-white">
-                    <h1 className="p-3 mb-5 text-center hidden md:block text-5xl font-bold">Categories</h1>
+                <section className="min-h-[100%] col-span-1 relative md:py-5  overflow-x-auto flex md:flex-col shadow-xl z-20 bg-white">
+                    <h1 className="p-3 mb-5 text-center hidden md:block text-3xl font-bold">Categories</h1>
                     {
                         listOfCate.map((cate) => {
                             return <div className="md:shadow border border-r-2 md:border-none flex-shrink-0 bg-white hover:bg-zinc-200" onClick={() => handleCateClick(cate.category)}>
-                                <p className="text-center text-xl p-2 md:py-8 font-bold ">{cate.category}</p>
+                                <p className="text-center text-xl py-2 px-7 p-2 md:py-8 font-bold ">{cate.category}</p>
                             </div>
                         })
                     }
@@ -58,15 +58,22 @@ const Category = () => {
                 <section className="md:p-5 p-2 grid col-span-3 grid-cols-2 md:grid-cols-4 gap-2 min-h-[100%] bg-white">
                     {
                         products.map((data) => {
-                            return <div onClick={()=>handleSubCate(data.subcategory)} className="flex flex-col bg-white shadow h-fit">
+                            return <div onClick={() => handleSubCate(data.subcategory)} className="flex flex-col bg-white shadow-xl h-fit">
                                 <img className="w-[100%] h-[150px] md:h-[300px]" src={`data:image/jpeg;base64,${data.data[0]}`} alt="" />
                                 <p className="text-center md:text-xl p-2 md:p-7 font-bold">{data.subcategory}</p>
                             </div>
                         })
                     }
+                    <div className="md:text-3xl absolute mt-56 md:w-[70%] w-[100%] font-bold text-center">
+                        <p>
+                        {
+                            products.length === 0 ? `Select any Category` : ''
+                        }
+                        </p>
+                    </div>
                 </section>
             </main>
-            <AboutUs/>
+            <AboutUs />
         </Fragment>
     )
 }

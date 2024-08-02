@@ -162,9 +162,9 @@ app.get('/sendemail', async (req, res) => {
             })
             console.log("Message sent: %s", info.messageId)
         }
-    
+
         main().catch(console.error);
-    } else{
+    } else {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -197,7 +197,7 @@ app.get('/sendemail', async (req, res) => {
             })
             console.log("Message sent: %s", info.messageId)
         }
-    
+
         main().catch(console.error);
     }
 })
@@ -316,16 +316,18 @@ app.get('/fetch', async (req, res) => {
     const productCollection = db.collection('allproducts')
     const userCollection = db.collection('users')
 
-    const result = await userCollection.updateOne({ email: email }, { $addToSet: { history: key } })
-    console.log(result);
+    if (email !== 'null') {
+        const result = await userCollection.updateOne({ email: email }, { $addToSet: { history: key } })
+        console.log(result);
 
-    const userHistory = await userCollection.findOne({ email: email })
-    if (userHistory.history.length > 5) {
-        userHistory.history.shift()
+        const userHistory = await userCollection.findOne({ email: email })
+        if (userHistory.history.length > 5) {
+            userHistory.history.shift()
+        }
+        const response = await userCollection.updateOne({ email: email }, { $set: { history: userHistory.history } })
+        console.log(response);
+
     }
-    const response = await userCollection.updateOne({ email: email }, { $set: { history: userHistory.history } })
-    console.log(response);
-
     const data = await productCollection.find().toArray()
     const fetchList = data.filter((product) => {
         if (product.color.toUpperCase().includes(key.toUpperCase()) || product.for.toUpperCase().includes(key.toUpperCase()) || product.product.toUpperCase().includes(key.toUpperCase()) || product.category.toUpperCase().includes(key.toUpperCase()) || product.subcategory.toUpperCase().includes(key.toUpperCase())) {

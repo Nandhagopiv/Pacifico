@@ -4,7 +4,7 @@ const About = () => {
   return (
     <section className="bg-gray-300 py-16 text-center">
       <div className="max-w-2xl mx-auto px-4">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">About Us</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">About Pacifico</h1>
         <p className="text-lg text-gray-600 leading-relaxed mb-8">
           Welcome to Pacifico! We are India’s premier e-commerce platform, offering a wide range of products from the latest electronics to everyday essentials. Our mission is to provide a seamless shopping experience with unbeatable prices, fast delivery, and exceptional customer service. Explore our diverse catalog and enjoy shopping from the comfort of your home.
         </p>
