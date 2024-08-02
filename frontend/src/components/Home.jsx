@@ -35,6 +35,7 @@ const Home = () => {
                 console.log(response.data);
                 setNewlyAdded(response.data)
                 setHide(true)
+                console.log(newlyAdded);
             }
         }
         refresh()

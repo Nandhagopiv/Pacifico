@@ -45,8 +45,8 @@ const Category = () => {
             <section style={{ display: hide ? 'none' : 'flex' }} className="fixed bg-zinc-200 justify-center items-center z-40 w-[100%] h-[100%] font-bold"><div className="loadicon md:h-[50px] md:w-[50px] h-[50px] w-[50px]"></div></section>
             <Nav />
             <main className="md:grid md:grid-cols-4 flex flex-col min-h-screen">
-                <section className="min-h-[100%] col-span-1 relative md:py-5  overflow-x-auto flex md:flex-col shadow-xl z-20 bg-white">
-                    <h1 className="p-3 mb-5 text-center hidden md:block text-3xl font-bold">Categories</h1>
+                <section className="col-span-1 relative md:overflow-y-auto md:h-[700px] overflow-x-auto flex md:flex-col shadow-xl z-20 bg-white">
+                    <h1 className="p-3 py-5 sticky top-0 bg-white text-center hidden md:block text-3xl font-bold">Categories</h1>
                     {
                         listOfCate.map((cate) => {
                             return <div className="md:shadow border border-r-2 md:border-none flex-shrink-0 bg-white hover:bg-zinc-200" onClick={() => handleCateClick(cate.category)}>
@@ -55,7 +55,7 @@ const Category = () => {
                         })
                     }
                 </section>
-                <section className="md:p-5 p-2 grid col-span-3 grid-cols-2 md:grid-cols-4 gap-2 min-h-[100%] bg-white">
+                <section className="md:p-5 p-2 grid col-span-3 md:overflow-y-auto grid-cols-2 md:grid-cols-4 gap-2 h-[700px] bg-white">
                     {
                         products.map((data) => {
                             return <div onClick={() => handleSubCate(data.subcategory)} className="flex flex-col bg-white shadow-xl h-fit">
