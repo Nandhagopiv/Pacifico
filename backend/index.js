@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { json } from 'express'
 import { MongoClient, ObjectId } from 'mongodb'
 import cors from 'cors'
 import nodemailer from 'nodemailer'
@@ -118,31 +118,88 @@ app.get('/signup', async (req, res) => {
 })
 
 app.get('/sendemail', async (req, res) => {
-    const { email, cart } = req.query
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: "nandhagopy@gmail.com",
-            pass: "ygph wxal eita vujf",
-        },
-    });
+    const { email, qty, cart, color, ttlprice, price, product, size } = req.query
+    console.log(ttlprice);
+    if (ttlprice !== 'undefined') {
+        const jsonString = cart
+        const jsonArrayString = `[${jsonString}]`
+        const cartList = JSON.parse(jsonArrayString)
 
-    async function main() {
-        const info = await transporter.sendMail({
-            from: '"Pacifico" <nandhagopy@gmail.com>',
-            to: `${email}`,
-            subject: "Order Successfully Placed",
-            html: `<p>Thank you for shopping with us! We’re excited to let you know that your order has been received and is currently being processed.</p>
-            <p>Thank you for choosing Pacifico. We hope you enjoy your purchase!
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: "nandhagopy@gmail.com",
+                pass: "ygph wxal eita vujf",
+            },
+        });
 
-Best regards,
+        async function main() {
+            const info = await transporter.sendMail({
+                from: '"Pacifico" <nandhagopy@gmail.com>',
+                to: `${email}`,
+                subject: "Order Successfully Placed",
+                html: `<p style="color: black;">Thank you for shopping with us! We’re excited to let you know that your order has been received and is currently being processed.</p>
+                <div>
+                        <h1 style="color: black;">Order Details</h1>
+                        ${cartList.map((data) => {
+                    return `<div>
+                                <div>
+                            <h3 style="color: black;">${data.product}</h3>
+                            <h4 style="color: black;">${data.color}</h4>
+                            <h4 style="color: black;">${data.qty} x ₹${data.price} = ₹${data.qty * data.price}</h4>
+                        </div>
+                        <h4 style="color: black;">Size Or Variant: ${data.size}</h4>
+                        </div>`
+                })
+                    }
+                        <h2 style="color: black;">Total Bill Amount (INR) : ₹${ttlprice}</h2>
+                    </div>
+                <p style="color: black;">Thank you for choosing Pacifico. We hope you enjoy your purchase!
+    
+    Best regards,
+    
+    The Pacifico Team</p>`,
+            })
+            console.log("Message sent: %s", info.messageId)
+        }
+    
+        main().catch(console.error);
+    } else{
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: "nandhagopy@gmail.com",
+                pass: "ygph wxal eita vujf",
+            },
+        });
 
-The Pacifico Team</p>`,
-        })
-        console.log("Message sent: %s", info.messageId)
+        async function main() {
+            const info = await transporter.sendMail({
+                from: '"Pacifico" <nandhagopy@gmail.com>',
+                to: `${email}`,
+                subject: "Order Successfully Placed",
+                html: `<p style="color: black;">Thank you for shopping with us! We’re excited to let you know that your order has been received and is currently being processed.</p>
+                <div>
+                        <h1 style="color: black;">Order Details</h1>
+                        <div>
+                            <h3 style="color: black;">${product}</h3>
+                            <h4 style="color: black;">${color}</h4>
+                            <h4 style="color: black;">${qty} x ₹${price} = ₹${qty * price}</h4>
+                        </div>
+                        <h4 style="color: black;">Size Or Variant: ${size}</h4>
+                        <h2 style="color: black;">Total Bill Amount (INR) : ₹${qty * price}</h2>
+                    </div>
+                <p style="color: black;">Thank you for choosing Pacifico. We hope you enjoy your purchase!
+    
+    Best regards,
+    
+    The Pacifico Team</p>`,
+            })
+            console.log("Message sent: %s", info.messageId)
+        }
+    
+        main().catch(console.error);
     }
-
-    main().catch(console.error);
 })
 
 app.get('/verify', async (req, res) => {
@@ -597,7 +654,7 @@ app.get('/fetchnewlyadded', async (req, res) => {
 app.post('/create-payment-intent', async (req, res) => {
     try {
         const { amount } = req.body
-        if (amount < 1000) {
+        if (amount < 10000) {
             throw new Error('Amount must be at least ₹10.00.');
         }
 

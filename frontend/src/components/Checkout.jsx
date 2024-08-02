@@ -6,9 +6,10 @@ const Checkout = () => {
     const Navigate = useNavigate()
     const item = useLocation()
     const [count, setCount] = useState(item.state.qty)
+    const totalPrice = count * item.state.price
 
     const handlePay = ()=>{
-        Navigate('/processpayment', {state:{amount:count * item.state.price}})
+        Navigate('/processpayment', {state:{amount:totalPrice*100, qty:count, product: item.state.item, price: item.state.price ,color:item.state.color, size: item.state.selSize}})
     }
     return (
         <Fragment>

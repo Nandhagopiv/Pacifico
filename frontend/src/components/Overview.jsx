@@ -46,7 +46,7 @@ const Overview = () => {
             setMsg(true)
         } else{
             if (user !== null){
-                Navigate('/checkout', { state: { item: item.state.item, img: item.state.img, color: item.state.col, price: item.state.price, mrp: item.state.mrp, qty: 1 } })
+                Navigate('/checkout', { state: { item: item.state.item, img: item.state.img, color: item.state.col, price: item.state.price, mrp: item.state.mrp, qty: 1, selSize: selectedSize} })
             }else{
                 alert('Please Login before Buying')
             }
