@@ -61,7 +61,7 @@ const Login = () => {
                             onChange={handleMail}
                             className="bg-gray-200 p-3 rounded-lg outline-none border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                             type="email"
-                            placeholder="Enter your Mobile or Email"
+                            placeholder="Enter your Email"
                         />
                         <input
                             required
