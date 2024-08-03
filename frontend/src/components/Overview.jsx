@@ -67,7 +67,7 @@ const Overview = () => {
                                     className="flex-none w-[20%] md:w-full flex-shrink-0"
                                 >
                                     <img
-                                        className="w-full rounded-sm"
+                                        className="w-full h-24 md:h-40 rounded-sm"
                                         src={`data:image/jpeg;base64,${pic}`}
                                         alt="Product"
                                     />

@@ -14,18 +14,21 @@ const PaymentForm = () => {
     const [error, setError] = useState(null);
     const [processing, setProcessing] = useState(false);
 
-    const [orderItems, setOrderItems] = useState(()=>{
-        const tempArr = amount.state.cart.map((data)=>{
-            const obj = {
-                product: data.product,
-                color: data.color,
-                qty: data.quantity,
-                price: data.price,
-                size: data.selectedsize
-            }
-            return JSON.stringify(obj)
-        })
-        return tempArr
+    const [orderItems, setOrderItems] = useState(() => {
+        console.log(amount.state.cart);
+        if (amount.state.cart !== undefined) {
+            const tempArr = amount.state.cart.map((data) => {
+                const obj = {
+                    product: data.product,
+                    color: data.color,
+                    qty: data.quantity,
+                    price: data.price,
+                    size: data.selectedsize
+                }
+                return JSON.stringify(obj)
+            })
+            return tempArr
+        }
     })
 
     useEffect(() => {
@@ -38,7 +41,7 @@ const PaymentForm = () => {
                 setError('Check your Network Connection');
             }
         };
-        
+
         createPaymentIntent();
     }, [amount])
 
@@ -52,7 +55,7 @@ const PaymentForm = () => {
 
         const { error: paymentMethodError, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
-            card: elements.getElement(CardElement),
+            card: elements.getElement(CardElement)
         });
 
         if (paymentMethodError) {

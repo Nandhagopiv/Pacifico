@@ -56,7 +56,6 @@ const Home = () => {
                 </h1>
             </section>
 
-            {/* Hero Section */}
             <section className="relative">
                 <img className="w-full h-[300px] lg:h-[500px] object-cover" src={poster} alt="Welcome to Pacifico" />
                 <div className="absolute inset-0 bg-black opacity-50 flex items-center justify-center text-center p-4">
@@ -71,10 +70,8 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Featured Slogans Section */}
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
-                {/* Slogan 1 */}
-                <div className="relative">
+                <div  className="relative">
                     <img className="w-full h-[200px] lg:h-[300px] object-cover" src={poster2} alt="Best Sellers" />
                     <div className="absolute inset-0 bg-black opacity-40 flex items-center justify-center text-center p-4">
                         <h3 className="text-xl lg:text-3xl text-white font-bold drop-shadow-lg">
@@ -83,7 +80,6 @@ const Home = () => {
                     </div>
                 </div>
 
-                {/* Slogan 2 */}
                 <div className="relative">
                     <img className="w-full h-[200px] lg:h-[300px] object-cover" src={poster5} alt="New Arrivals" />
                     <div className="absolute inset-0 bg-black opacity-40 flex items-center justify-center text-center p-4">
@@ -93,7 +89,6 @@ const Home = () => {
                     </div>
                 </div>
 
-                {/* Slogan 3 */}
                 <div className="relative">
                     <img className="w-full h-[200px] lg:h-[300px] object-cover" src={poster4} alt="Special Offers" />
                     <div className="absolute inset-0 bg-black opacity-40 flex items-center justify-center text-center p-4">
@@ -104,7 +99,6 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Call to Action Section */}
             <section className="relative">
                 <img className="w-full h-[400px] object-cover" src={poster3} alt="Shop Now" />
                 <div className="absolute inset-0 bg-black opacity-50 flex flex-col items-center justify-center text-center p-6">
