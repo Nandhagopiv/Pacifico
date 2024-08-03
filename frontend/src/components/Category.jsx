@@ -55,7 +55,7 @@ const Category = () => {
                         })
                     }
                 </section>
-                <section className="md:p-5 p-2 grid col-span-3 md:overflow-y-auto grid-cols-2 md:grid-cols-4 gap-2 h-[700px] bg-white">
+                <section className="md:p-5 p-2 grid col-span-3 md:overflow-y-auto grid-cols-2 md:grid-cols-4 gap-2 md:h-[700px] bg-white">
                     {
                         products.map((data) => {
                             return <div onClick={() => handleSubCate(data.subcategory)} className="flex flex-col bg-white shadow-xl h-fit">
