@@ -43,7 +43,7 @@ const Products = () => {
                 await axios.get(`https://pacifico.onrender.com/fetch?key=${key}&email=${user.email}`).then((data) => {
                     console.log(data.data)
                     setAllProducts(data.data)
-                    setSearchHead(`Searched for ${searchWord}`)
+                    setSearchHead(`Searched for ${key}`)
                 })
                 setHistoryHide(true)
                 setHide(true)
@@ -52,7 +52,7 @@ const Products = () => {
                 await axios.get(`https://pacifico.onrender.com/fetch?key=${key}&email=${null}`).then((data) => {
                     console.log(data.data)
                     setAllProducts(data.data)
-                    setSearchHead(`Searched for ${searchWord}`)
+                    setSearchHead(`Searched for ${key}`)
                 })
                 setHistoryHide(true)
                 setHide(true)
