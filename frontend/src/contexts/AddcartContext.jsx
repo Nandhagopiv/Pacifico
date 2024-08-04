@@ -53,7 +53,6 @@ const AddcartContext = (props) => {
             return JSON.parse(data)
         })
         userDet.cart = tempArr
-        console.log(userDet);
         localStorage.setItem('user', JSON.stringify(userDet))
         setUser(userDet)
     }
@@ -65,7 +64,6 @@ const AddcartContext = (props) => {
             return JSON.parse(data)
         })
         userDet.cart = tempArr
-        console.log(userDet)
         localStorage.setItem('user', JSON.stringify(userDet))
         setUser(userDet)
         setCartList(userDet.cart)

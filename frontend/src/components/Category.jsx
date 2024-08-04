@@ -27,16 +27,13 @@ const Category = () => {
         setHide(false)
         axios.get(`https://pacifico.onrender.com/displaycate?selCate=${selCate}`).then((data) => {
             setProducts(data.data)
-            console.log(data.data);
             setHide(true)
         })
     }
 
     const handleSubCate = async (subcate) => {
-        console.log(subcate);
         setHide(false)
         const response = await axios.get(`https://pacifico.onrender.com/getlist?key=${subcate}`)
-        console.log(response);
         Navigate('/list', { state: { list: response.data, subCate: subcate } })
         setHide(true)
     }

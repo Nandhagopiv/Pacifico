@@ -41,7 +41,6 @@ const Products = () => {
             if (user !== null) {
                 setHide(false)
                 await axios.get(`https://pacifico.onrender.com/fetch?key=${key}&email=${user.email}`).then((data) => {
-                    console.log(data.data)
                     setAllProducts(data.data)
                     setSearchHead(`Searched for ${key}`)
                 })
@@ -50,7 +49,6 @@ const Products = () => {
             } else{
                 setHide(false)
                 await axios.get(`https://pacifico.onrender.com/fetch?key=${key}&email=${null}`).then((data) => {
-                    console.log(data.data)
                     setAllProducts(data.data)
                     setSearchHead(`Searched for ${key}`)
                 })

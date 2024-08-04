@@ -71,7 +71,6 @@ const ListOfProducts = () => {
             const index = priceFilter.indexOf(e.target.value)
             priceFilter.splice(index,1)
         }
-        console.log(priceFilter)
     }
 
     const handleBrand = (e)=>{
@@ -81,7 +80,6 @@ const ListOfProducts = () => {
             const index = brandFilter.indexOf(e.target.value)
             brandFilter.splice(index,1)
         }
-        console.log(brandFilter)
     }
 
     const handleColor = (e)=>{
@@ -91,13 +89,11 @@ const ListOfProducts = () => {
             const index = colorFilter.indexOf(e.target.value)
             colorFilter.splice(index,1)
         }
-        console.log(colorFilter);
     }
 
     const handleApplyFilter = async()=>{
         setHide(false)
         const response = await axios.get(`https://pacifico.onrender.com/applyfilter?brands=${brandsArr}&price=${price}&color=${colorArr}&subcate=${selProducts.state.subCate}&forbrand=${brandFilter}&forprice=${priceFilter}&forcolor=${colorFilter}`)
-        console.log(response.data);
         setProducts(response.data)
         setFilterBox(false)
         setHide(true)

@@ -15,7 +15,6 @@ const PaymentForm = () => {
     const [processing, setProcessing] = useState(false);
 
     const [orderItems, setOrderItems] = useState(() => {
-        console.log(amount.state.cart);
         if (amount.state.cart !== undefined) {
             const tempArr = amount.state.cart.map((data) => {
                 const obj = {
@@ -33,7 +32,6 @@ const PaymentForm = () => {
 
     useEffect(() => {
         const createPaymentIntent = async () => {
-            console.log(amount.state.cart);
             try {
                 const { data } = await axios.post('https://pacifico.onrender.com/create-payment-intent', { amount: amount.state.amount });
                 setClientSecret(data.clientSecret);

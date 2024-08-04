@@ -13,29 +13,14 @@ const Home = () => {
     const [hide, setHide] = useState(true)
     const [newlyAdded, setNewlyAdded] = useState([])
     const Navigate = useNavigate()
-    const Brands = [
-        "Nike",
-        "Adidas",
-        "Puma",
-        "Reebok",
-        "Vans",
-        "Converse",
-        "New Balance",
-        "ASICS",
-        "Timberland",
-        "Salomon",
-        "Birkenstock"
-    ]
 
     useEffect(() => {
         async function refresh() {
             if (newlyAdded.length === 0) {
                 setHide(false)
                 const response = await axios.get(`https://pacifico.onrender.com/fetchnewlyadded`)
-                console.log(response.data);
                 setNewlyAdded(response.data)
                 setHide(true)
-                console.log(newlyAdded);
             }
         }
         refresh()
