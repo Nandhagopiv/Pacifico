@@ -32,7 +32,6 @@ const Home = () => {
 
     return (
         <Fragment>
-            <section style={{ display: hide ? 'none' : 'flex' }} className="fixed bg-zinc-200 justify-center items-center z-40 w-[100%] h-[100%] font-bold"><div className="loadicon md:h-[50px] md:w-[50px] h-[50px] w-[50px]"></div></section>
             <Nav />
 
             <section className="bg-teal-600 text-white p-4 text-center">
@@ -104,6 +103,7 @@ const Home = () => {
             <section className="bg-white flex p-2 justify-center py-10">
                 <div className="md:w-[75%] w-[100%]">
                     <h1 className="font-bold p-5 text-center text-2xl md:text-5xl">Newly Added</h1>
+                    <section style={{ display: hide ? 'none' : 'flex' }} className="justify-center items-center z-40 mt-20 font-bold"><div className="loadicon md:h-[50px] md:w-[50px] h-[50px] w-[50px]"></div></section>
                     <div className="grid grid-cols-2 gap-2 mt-10 md:grid-cols-4">
                         {
                             newlyAdded.map((product) => {

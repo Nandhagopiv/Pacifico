@@ -457,8 +457,8 @@ app.get('/addquantity', async (req, res) => {
 
 app.get('/getlist', async (req, res) => {
     const { key } = req.query
-    await client.connect();
-    const db = client.db('Ecommerce');
+    await client.connect()
+    const db = client.db('Ecommerce')
     const productCollection = db.collection('allproducts')
     const data = await productCollection.find().toArray()
 
@@ -469,18 +469,17 @@ app.get('/getlist', async (req, res) => {
             return false
         }
     })
-
     res.send(subCateList)
 })
 
 app.get('/lessquantity', async (req, res) => {
-    const { productref, email } = req.query;
-    console.log(productref, email);
+    const { productref, email } = req.query
+    console.log(productref, email)
 
     try {
-        await client.connect();
-        const db = client.db('Ecommerce');
-        const userCollection = db.collection('users');
+        await client.connect()
+        const db = client.db('Ecommerce')
+        const userCollection = db.collection('users')
 
         const user = await userCollection.findOne({ email: email })
 
@@ -489,11 +488,11 @@ app.get('/lessquantity', async (req, res) => {
         }
 
         const updatedCart = user.cart.map(item => {
-            const parsedItem = JSON.parse(item);
+            const parsedItem = JSON.parse(item)
             if (parsedItem.product === productref) {
-                parsedItem.quantity -= 1;
+                parsedItem.quantity -= 1
             }
-            return JSON.stringify(parsedItem);
+            return JSON.stringify(parsedItem)
         });
 
         const result = await userCollection.updateOne(
@@ -506,8 +505,8 @@ app.get('/lessquantity', async (req, res) => {
         res.send(data)
 
     } catch (error) {
-        console.error('Error lessing quantity:', error);
-        res.status(500).json({ error: 'Server error' });
+        console.error('Error lessing quantity:', error)
+        res.status(500).json({ error: 'Server error' })
     }
 })
 

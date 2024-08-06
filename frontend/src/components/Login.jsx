@@ -19,7 +19,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setHide(false)
-        await axios.get(`https://pacifico.onrender.com/login?enteredmail=${mail}&enteredpass=${loginPass}`).then( async(data) => {
+        axios.get(`https://pacifico.onrender.com/login?enteredmail=${mail}&enteredpass=${loginPass}`).then( async(data) => {
             if (data.data === false) {
                 setLoginSts(false)
             } else {
@@ -29,8 +29,8 @@ const Login = () => {
                 login(data)
                 setUserSts(true)
             }
+            setHide(true)
         })
-        setHide(true)
     }
 
     const handleMail = (e) => {

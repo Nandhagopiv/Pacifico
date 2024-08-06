@@ -79,7 +79,7 @@ const AddcartContext = (props) => {
     }, [user]);
 
     return (
-        <CartContext.Provider value={{ logout,history, setHistory, addingUserDataToUpdateCart, cartList, setCartList, login, userSts, user, setUser, setUserSts }}>
+        <CartContext.Provider value={{ logout, history, setHistory, addingUserDataToUpdateCart, cartList, setCartList, login, userSts, user, setUser, setUserSts }}>
             {
                 props.children
             }
